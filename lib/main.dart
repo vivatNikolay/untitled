@@ -1,12 +1,11 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:untitled/src/tabs.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
   // fetchData();
-  runApp(const MyTabBar());
+  runApp(const MyApp());
 }
 
 void fetchData() async {
@@ -15,14 +14,18 @@ void fetchData() async {
   log('\n Start ${response.body} End \n');
 }
 
-class MyTabBar extends StatelessWidget {
-  const MyTabBar({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
-      home: MyTabController(),
+      title: 'Scheduler',
+      theme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+        visualDensity: VisualDensity.adaptivePlatformDensity
+      ),
+      home: const MyHomePage(),
     );
   }
 }

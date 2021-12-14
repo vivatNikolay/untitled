@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:untitled/src/entity.dart';
-
 import 'utils.dart';
 
-class TableEventsExample extends StatefulWidget {
+class TableAssignments extends StatefulWidget {
+  const TableAssignments({Key? key}) : super(key: key);
+
   @override
-  _TableEventsExampleState createState() => _TableEventsExampleState();
+  _TableAssignmentsState createState() => _TableAssignmentsState();
 }
 
-class _TableEventsExampleState extends State<TableEventsExample> {
-  late final ValueNotifier<List<Assignment>> _selectedEvents;
+class _TableAssignmentsState extends State<TableAssignments> {
+  late final ValueNotifier<List<Assignment>> _selectedAssignments;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   late final RangeSelectionMode _rangeSelectionMode;
   DateTime _focusedDay = DateTime.now();
@@ -20,17 +21,17 @@ class _TableEventsExampleState extends State<TableEventsExample> {
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+    _selectedAssignments = ValueNotifier(_getAssignmentsForDay(_selectedDay!));
     _rangeSelectionMode = RangeSelectionMode.toggledOff;
   }
 
   @override
   void dispose() {
-    _selectedEvents.dispose();
+    _selectedAssignments.dispose();
     super.dispose();
   }
 
-  List<Assignment> _getEventsForDay(DateTime day) {
+  List<Assignment> _getAssignmentsForDay(DateTime day) {
 
     return getAssignmentsByDay(day);
   }
@@ -42,7 +43,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
         _focusedDay = focusedDay;
       });
 
-      _selectedEvents.value = _getEventsForDay(selectedDay);
+      _selectedAssignments.value = _getAssignmentsForDay(selectedDay);
     }
   }
 
@@ -58,7 +59,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
             selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
             calendarFormat: _calendarFormat,
             rangeSelectionMode: _rangeSelectionMode,
-            eventLoader: _getEventsForDay,
+            eventLoader: _getAssignmentsForDay,
             startingDayOfWeek: StartingDayOfWeek.monday,
             calendarStyle: CalendarStyle(
               outsideDaysVisible: true,
@@ -78,7 +79,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
           const SizedBox(height: 8.0),
           Expanded(
             child: ValueListenableBuilder<List<Assignment>>(
-              valueListenable: _selectedEvents,
+              valueListenable: _selectedAssignments,
               builder: (context, value, _) {
                 return ListView.builder(
                   itemCount: value.length,
