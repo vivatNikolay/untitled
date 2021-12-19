@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:untitled/src/login.dart';
 import 'package:untitled/src/tabs.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.deepPurple,
         visualDensity: VisualDensity.adaptivePlatformDensity
       ),
-      home: const MyHomePage(),
+      home: LoginScreen()
     );
   }
 }
