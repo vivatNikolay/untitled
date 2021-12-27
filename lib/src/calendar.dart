@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:untitled/src/entity.dart';
 import 'utils.dart';
@@ -84,6 +85,7 @@ class _TableAssignmentsState extends State<TableAssignments> {
                 return ListView.builder(
                   itemCount: value.length,
                   itemBuilder: (context, index) {
+                    final DateFormat formatTime = DateFormat('HH:mm');
                     return Container(
                       margin: const EdgeInsets.symmetric(
                         horizontal: 12.0,
@@ -95,7 +97,9 @@ class _TableAssignmentsState extends State<TableAssignments> {
                       ),
                       child: ListTile(
                         onTap: () => print('${value[index]}'),
-                        title: Text('${value[index]}'),
+                        title: Text('${value[index].procedureName} '
+                            '${formatTime.format(value[index].begin)}-'
+                            '${formatTime.format(value[index].end)}'),
                       ),
                     );
                   },

@@ -65,7 +65,7 @@ class MyDrawer extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.logout),
               minLeadingWidth: 24,
-              title: const Text('Log out'),
+              title: const Text('Выход'),
               onTap: () {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(

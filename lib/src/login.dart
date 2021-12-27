@@ -42,7 +42,8 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 children: [
                   const Text(
-                    'Welcome',
+                    'Добро пожаловать',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'PT-Sans',
                       fontSize: 40,
@@ -56,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Container(
                     alignment: Alignment.centerLeft,
                     child: const Text(
-                      'Phone',
+                      'Телефон',
                       style: TextStyle(
                         fontFamily: 'PT-Sans',
                         fontSize: 16,
@@ -69,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 10,
                   ),
                   _buildTextField(
-                    hintText: 'Enter your phone',
+                    hintText: 'Введите номер телефона',
                     prefixedIcon: const Icon(Icons.phone_iphone, color: Colors.white),
                   ),
                   const SizedBox(
@@ -132,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         child: const Text(
-          'Log in',
+          'Войти',
           style: TextStyle(
             fontFamily: 'PT-Sans',
             fontSize: 16,

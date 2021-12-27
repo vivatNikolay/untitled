@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:untitled/src/drawer.dart';
 import 'package:untitled/src/utils.dart';
 import 'calendar.dart';
 
 class MyHomePage extends StatefulWidget {
-  final String title = 'Schedule';
+  final String title = 'Расписание';
   const MyHomePage({Key? key}) : super(key: key);
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -20,8 +21,8 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: Text(widget.title),
           bottom: const TabBar(tabs: [
-            Tab(text: 'Today'),
-            Tab(text: 'Tomorrow'),
+            Tab(text: 'Сегодня'),
+            Tab(text: 'Завтра'),
             Tab(icon: Icon(Icons.calendar_today_rounded)),
           ],),
         ),
@@ -38,6 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   ListView listView(DateTime day) {
+    final DateFormat formatTime = DateFormat('HH:mm');
     return ListView.builder(
         itemCount: getAssignmentsByDay(day).length,
         itemBuilder: (_, index) {

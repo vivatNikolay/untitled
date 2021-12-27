@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:untitled/src/login.dart';
-import 'package:untitled/src/tabs.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
