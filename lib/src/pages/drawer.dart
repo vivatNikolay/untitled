@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled/src/login.dart';
+import 'package:untitled/src/pages/login.dart';
 
-import 'entity.dart';
+import '../models/relaxer.dart';
 
 class MyDrawer extends StatelessWidget {
 
@@ -27,7 +27,7 @@ class MyDrawer extends StatelessWidget {
                       child: CircleAvatar(
                         backgroundColor: Colors.white,
                         radius: 40.0,
-                        child: Image.asset(relaxer.gender
+                        child: Image.asset(relaxer.sex
                             ? "assets/images/man.png"
                             : "assets/images/woman.png"),
                       ),

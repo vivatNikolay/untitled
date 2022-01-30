@@ -1,17 +1,11 @@
-import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:untitled/src/login.dart';
-import 'package:http/http.dart' as http;
+import 'package:untitled/src/pages/login.dart';
 
 void main() {
-  // fetchData();
+  HttpOverrides.global = MyHttpOverrides ();
   runApp(const MyApp());
-}
-
-void fetchData() async {
-  final response = await http
-      .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
-  log('\n Start ${response.body} End \n');
 }
 
 class MyApp extends StatelessWidget {
@@ -27,5 +21,13 @@ class MyApp extends StatelessWidget {
       ),
       home: LoginScreen()
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
   }
 }

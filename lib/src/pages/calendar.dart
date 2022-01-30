@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:untitled/src/entity.dart';
-import 'utils.dart';
+import 'package:untitled/src/models/assignment.dart';
+import '../utils.dart';
 
 class TableAssignments extends StatefulWidget {
   const TableAssignments({Key? key}) : super(key: key);

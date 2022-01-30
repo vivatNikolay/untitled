@@ -1,8 +1,8 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled/src/tabs.dart';
+import 'package:untitled/src/models/sanatorium.dart';
+import 'package:untitled/src/pages/tabs.dart';
+import '../http_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -11,7 +11,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
+  final HttpController _httpController = HttpController.instance;
   TextEditingController inputController = TextEditingController();
+  var frequencySanatoriumName;
 
   @override
   @override
@@ -54,27 +56,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 50,
                   ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: const Text(
-                      'Телефон',
-                      style: TextStyle(
-                        fontFamily: 'PT-Sans',
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
+                  _buildTextContainer(
+                      text: 'Санаторий'
+                  ),
+                  _buildDropDownField(
+                    hintText: 'Введите ваш санаторий',
                   ),
                   const SizedBox(
                     height: 10,
+                  ),
+                  _buildTextContainer(
+                    text: 'Телефон'
                   ),
                   _buildTextField(
                     hintText: 'Введите номер телефона',
                     prefixedIcon: const Icon(Icons.phone_iphone, color: Colors.white),
                   ),
                   const SizedBox(
-                    height: 28,
+                    height: 20,
                   ),
                   _buildLoginButton()
                 ],
@@ -86,9 +85,70 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  Widget _buildTextContainer({
+  required String text,
+  }) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      margin: const EdgeInsets.only(bottom: 10),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontFamily: 'PT-Sans',
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropDownField({
+    required String hintText,
+  }) {
+    return Material(
+      color: const Color(0xFF803DBB),
+      elevation: 2,
+      child: DropdownButton<String>(
+        isExpanded: true,
+        items: Sanatorium.sanatoriumMap.map((name, code) {
+          return MapEntry(
+              code,
+          DropdownMenuItem<String>(
+            child: Text(
+                "    $name",
+                style: const TextStyle(color: Colors.white),
+            ),
+            value: code,
+          ));
+        }).values.toList(),
+        value: frequencySanatoriumName,
+        iconEnabledColor: Colors.white,
+        iconDisabledColor: Colors.white70,
+        dropdownColor: const Color(0xFF803DBB),
+        underline: const SizedBox(),
+        hint: Text(
+            "    $hintText",
+            style: const TextStyle(
+              color: Colors.white70,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'PTSans',
+            ),
+          ),
+          onChanged: (String? newValue) {
+          if (newValue != null) {
+            setState(() {
+              frequencySanatoriumName = newValue;
+            });
+          }
+        },
+      )
+    );
+  }
+
   Widget _buildTextField({
     Widget? prefixedIcon,
-    String? hintText,
+    required String hintText,
   }) {
     return Material(
       color: Colors.transparent,
@@ -141,8 +201,9 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Colors.black,
           ),
         ),
-        onPressed: () {
+        onPressed: () async {
           if (_checkPhone()) {
+            await Future.delayed(const Duration(seconds: 2));
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                     builder: (context) => const MyHomePage()
@@ -154,7 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   bool _checkPhone() {
+    _httpController.init(frequencySanatoriumName, inputController.text);
     return true;
   }
-
 }
