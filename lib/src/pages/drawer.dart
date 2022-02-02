@@ -1,14 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/src/pages/login.dart';
-
+import '../../boxes.dart';
+import '../controller.dart';
 import '../models/relaxer.dart';
 
 class MyDrawer extends StatelessWidget {
 
-  final Relaxer relaxer;
+  late final Relaxer relaxer;
 
-  MyDrawer({ required this.relaxer});
+  final HttpController _httpController = HttpController.instance;
+
+  MyDrawer({Key? key}) : super(key: key) {
+    relaxer = _httpController.getRelaxer() ?? Relaxer(phone: '291234567', name: 'Name', surname: 'Surname', sex: true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +74,9 @@ class MyDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                        builder: (context) => LoginScreen()
+                        builder: (context) => const LoginScreen()
                     ));
+                _httpController.deleteRelaxer();
               },
             ),
           ],

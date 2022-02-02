@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/src/models/sanatorium.dart';
 import 'package:untitled/src/pages/tabs.dart';
-import '../http_controller.dart';
+import '../controller.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -15,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController inputController = TextEditingController();
   var frequencySanatoriumName;
 
-  @override
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

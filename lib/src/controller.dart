@@ -1,19 +1,19 @@
 import 'dart:async';
 import 'dart:developer';
-
+import 'package:untitled/boxes.dart';
 import 'package:untitled/src/services/http_service.dart';
-
 import 'models/relaxer.dart';
 
 class HttpController {
 
+  final box = Boxes.getRelaxer();
   late Future<Relaxer> futureRelaxer;
-  late Relaxer relaxer;
   final HttpService _httpService = HttpService();
 
   HttpController._privateConstructor();
-
   static final HttpController _instance = HttpController._privateConstructor();
+
+  static HttpController get instance => _instance;
 
   void init(String sanKey, String phone) async {
     futureRelaxer = _httpService.fetchRelaxer(sanKey, phone);
@@ -27,17 +27,14 @@ class HttpController {
   }
 
   void setRelaxer(Relaxer relaxer) {
-    this.relaxer = relaxer;
+    box.put(0, relaxer);
   }
 
-  Relaxer getRelaxer() {
-    return relaxer;
+  Relaxer? getRelaxer() {
+    return box.get(0);
   }
 
-  static HttpController get instance => _instance;
-
-  void handleError(e) {
-    log(e);
+  void deleteRelaxer() {
+    box.get(0)!.delete();
   }
-
 }

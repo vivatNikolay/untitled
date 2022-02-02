@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:untitled/src/http_controller.dart';
-import 'package:untitled/src/models/relaxer.dart';
+import 'package:untitled/src/controller.dart';
 import 'package:untitled/src/pages/drawer.dart';
 import 'package:untitled/src/utils.dart';
 import 'calendar.dart';
@@ -15,7 +14,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  final HttpController _httpController = HttpController.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
               const TableAssignments()
             ])
         ),
-        drawer: MyDrawer(relaxer: _httpController.getRelaxer()),
+        drawer: MyDrawer(),
       ),
     );
   }
