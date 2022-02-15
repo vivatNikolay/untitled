@@ -5,7 +5,6 @@ class Sanatorium {
 
   static final Map<String, String> _sanatoriumMap = {
     "Тестовый" : "230",
-    "Санаторий" : "300",
-    "База Отдыха" : "301"
+    "Тестовый Нина" : "2"
   };
 }

@@ -12,7 +12,7 @@ class MyDrawer extends StatelessWidget {
   final HttpController _httpController = HttpController.instance;
 
   MyDrawer({Key? key}) : super(key: key) {
-    relaxer = _httpController.getRelaxer() ?? Relaxer(phone: '291234567', name: 'Name', surname: 'Surname', sex: true);
+    relaxer = _httpController.getRelaxer() ?? Relaxer(email: 'privet@gmail.com', name: 'Name', surname: 'Surname', sex: true);
   }
 
   @override
@@ -49,9 +49,9 @@ class MyDrawer extends StatelessWidget {
                         )),
                     Align(
                         alignment:
-                        Alignment.bottomLeft + const Alignment(-0.05, -0.05),
+                        Alignment.bottomLeft + const Alignment(-0.02, -0.05),
                         child: Text(
-                          relaxer.phone,
+                          relaxer.email,
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 17.0,

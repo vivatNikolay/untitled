@@ -17,7 +17,7 @@ class RelaxerAdapter extends TypeAdapter<Relaxer> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Relaxer(
-      phone: fields[0] as String,
+      email: fields[0] as String,
       name: fields[1] as String,
       surname: fields[2] as String,
       sex: fields[3] as bool,
@@ -29,7 +29,7 @@ class RelaxerAdapter extends TypeAdapter<Relaxer> {
     writer
       ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.phone)
+      ..write(obj.email)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)

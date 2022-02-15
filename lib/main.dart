@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     StatefulWidget home;
     if (Boxes.getRelaxer().isEmpty) {
-      home = LoginScreen();
+      home = const LoginScreen();
     } else {
       home = const MyHomePage();
     }

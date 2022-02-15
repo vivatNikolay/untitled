@@ -5,7 +5,7 @@ part 'relaxer.g.dart';
 @HiveType(typeId:0)
 class Relaxer extends HiveObject{
   @HiveField(0)
-  String phone;
+  String email;
   @HiveField(1)
   String name;
   @HiveField(2)
@@ -14,7 +14,7 @@ class Relaxer extends HiveObject{
   bool sex;
 
   Relaxer({
-    required this.phone,
+    required this.email,
     required this.name,
     required this.surname,
     required this.sex
@@ -22,7 +22,7 @@ class Relaxer extends HiveObject{
 
   factory Relaxer.fromJson(Map<String, dynamic> json) {
     return Relaxer(
-    phone : json["phone"],
+    email : json["email"],
     name : json["name"],
     surname : json["surname"],
     sex : json["sex"]

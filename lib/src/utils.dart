@@ -4,23 +4,23 @@ import 'models/assignment.dart';
 
 
 Set<Assignment> assignments = {
-  Assignment(procedureName: "Процедура 1", begin: DateTime(2022,1,30, 1), end: DateTime(2022,1,30)),
-  Assignment(procedureName: "Процедура 2", begin: DateTime(2022,1,30, 2), end: DateTime(2022,1,30)),
-  Assignment(procedureName: "Процедура 3", begin: DateTime(2022,1,31, 1), end: DateTime(2022,1,31)),
-  Assignment(procedureName: "Процедура 4", begin: DateTime(2022,1,31, 2), end: DateTime(2022,1,31)),
-  Assignment(procedureName: "Процедура 5", begin: DateTime(2022,1,31, 3), end: DateTime(2022,1,31)),
-  Assignment(procedureName: "Процедура 6", begin: DateTime(2022,1,31, 4), end: DateTime(2022,1,31)),
-  Assignment(procedureName: "Процедура 7", begin: DateTime(2022,1,31, 5), end: DateTime(2022,1,31)),
-  Assignment(procedureName: "Процедура 8", begin: DateTime(2022,1,31, 6), end: DateTime(2022,1,31)),
-  Assignment(procedureName: "Процедура 9", begin: DateTime(2022,1,31, 7), end: DateTime(2022,1,31)),
-  Assignment(procedureName: "Процедура 10", begin: DateTime(2022,1,31, 8), end: DateTime(2022,1,31)),
-  Assignment(procedureName: "Процедура 11", begin: DateTime(2022,1,31, 9), end: DateTime(2022,1,31)),
-  Assignment(procedureName: "Процедура 12", begin: DateTime(2022,1,31, 10), end: DateTime(2022,1,31)),
-  Assignment(procedureName: "Процедура 13", begin: DateTime(2022,1,31, 11), end: DateTime(2022,1,31)),
-  Assignment(procedureName: "Процедура 14", begin: DateTime(2022,1,31, 12), end: DateTime(2022,1,31)),
-  Assignment(procedureName: "Процедура 15", begin: DateTime(2022,1,31, 13), end: DateTime(2022,1,31)),
-  Assignment(procedureName: "Процедура 16", begin: DateTime(2022,1,31, 14), end: DateTime(2022,1,31)),
-  Assignment(procedureName: "Процедура 17", begin: DateTime(2022,1,31, 15), end: DateTime(2022,1,31))
+  Assignment(procedureName: "Процедура 1", begin: DateTime(2022,2,11, 1), end: DateTime(2022,2,11)),
+  Assignment(procedureName: "Процедура 2", begin: DateTime(2022,2,11, 2), end: DateTime(2022,2,11)),
+  Assignment(procedureName: "Процедура 3", begin: DateTime(2022,2,12, 1), end: DateTime(2022,2,12)),
+  Assignment(procedureName: "Процедура 4", begin: DateTime(2022,2,12, 2), end: DateTime(2022,2,12)),
+  Assignment(procedureName: "Процедура 5", begin: DateTime(2022,2,12, 3), end: DateTime(2022,2,12)),
+  Assignment(procedureName: "Процедура 6", begin: DateTime(2022,2,12, 4), end: DateTime(2022,2,12)),
+  Assignment(procedureName: "Процедура 7", begin: DateTime(2022,2,12, 5), end: DateTime(2022,2,12)),
+  Assignment(procedureName: "Процедура 8", begin: DateTime(2022,2,12, 6), end: DateTime(2022,2,12)),
+  Assignment(procedureName: "Процедура 9", begin: DateTime(2022,2,12, 7), end: DateTime(2022,2,12)),
+  Assignment(procedureName: "Процедура 10", begin: DateTime(2022,2,12, 8), end: DateTime(2022,2,12)),
+  Assignment(procedureName: "Процедура 11", begin: DateTime(2022,2,12, 9), end: DateTime(2022,2,12)),
+  Assignment(procedureName: "Процедура 12", begin: DateTime(2022,2,12, 10), end: DateTime(2022,2,12)),
+  Assignment(procedureName: "Процедура 13", begin: DateTime(2022,2,12, 11), end: DateTime(2022,2,12)),
+  Assignment(procedureName: "Процедура 14", begin: DateTime(2022,2,12, 12), end: DateTime(2022,2,12)),
+  Assignment(procedureName: "Процедура 15", begin: DateTime(2022,2,12, 13), end: DateTime(2022,2,12)),
+  Assignment(procedureName: "Процедура 16", begin: DateTime(2022,2,12, 14), end: DateTime(2022,2,12)),
+  Assignment(procedureName: "Процедура 17", begin: DateTime(2022,2,12, 15), end: DateTime(2022,2,12))
 };
 
 final kToday = DateTime.now();

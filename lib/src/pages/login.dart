@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:untitled/src/models/sanatorium.dart';
 import 'package:untitled/src/pages/tabs.dart';
 import '../controller.dart';
@@ -16,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final HttpController _httpController = HttpController.instance;
   TextEditingController inputController = TextEditingController();
   var frequencySanatoriumName;
+  bool _textFieldsEmpty = false;
 
 
   @override
@@ -62,17 +66,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       text: 'Санаторий'
                   ),
                   _buildDropDownField(
-                    hintText: 'Введите ваш санаторий',
+                    hintText: 'Выберите санаторий',
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   _buildTextContainer(
-                    text: 'Телефон'
+                    text: 'Email'
                   ),
                   _buildTextField(
-                    hintText: 'Введите номер телефона',
-                    prefixedIcon: const Icon(Icons.phone_iphone, color: Colors.white),
+                    hintText: 'Введите email',
+                    prefixedIcon: const Icon(Icons.email_outlined, color: Colors.white),
                   ),
                   const SizedBox(
                     height: 20,
@@ -154,7 +158,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }) {
     return Material(
       color: Colors.transparent,
-      elevation: 2,
       child: TextField(
         controller: inputController,
         cursorColor: Colors.white,
@@ -170,6 +173,14 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Colors.white70,
             fontWeight: FontWeight.bold,
             fontFamily: 'PTSans',
+          ),
+          errorText: _textFieldsEmpty ? 'Это поле не может быть пустым' : null,
+          errorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xFFBA1818), width: 1),
+          ),
+          errorStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color(0xFFBA1818),
           ),
         ),
       ),
@@ -204,20 +215,31 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         onPressed: () async {
-          if (_checkPhone()) {
-            await Future.delayed(const Duration(seconds: 2));
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                    builder: (context) => const MyHomePage()
-                ));
+          setState(() {
+            inputController.text.isEmpty ? _textFieldsEmpty = true : _textFieldsEmpty = false;
+          });
+          if (frequencySanatoriumName == null || inputController.text.isEmpty) {
+            return;
           }
+          _checkLogin();
         },
       ),
     );
   }
 
-  bool _checkPhone() {
+  Future<void> _checkLogin() async {
     _httpController.init(frequencySanatoriumName, inputController.text);
-    return true;
+      await Future.delayed(const Duration(seconds: 1));
+      if (_httpController.isSuccess()) {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const MyHomePage()));
+      } else {
+        Fluttertoast.showToast(
+            msg: "Отдыхающий не найден",
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 17.0
+        );
+      }
   }
 }

@@ -9,21 +9,29 @@ class HttpController {
   final box = Boxes.getRelaxer();
   late Future<Relaxer> futureRelaxer;
   final HttpService _httpService = HttpService();
+  bool _success = false;
 
   HttpController._privateConstructor();
   static final HttpController _instance = HttpController._privateConstructor();
 
   static HttpController get instance => _instance;
 
-  void init(String sanKey, String phone) async {
-    futureRelaxer = _httpService.fetchRelaxer(sanKey, phone);
-    log(sanKey+" "+phone);
-    Timer(const Duration(milliseconds: 100), () {
-      futureRelaxer.then((value) { setRelaxer(value); },
+  void init(String sanKey, String email) async {
+    futureRelaxer = _httpService.fetchRelaxer(sanKey, email);
+    log(sanKey+" "+email);
+    Timer(const Duration(milliseconds: 10), () {
+      futureRelaxer.then((value) {
+        _success = true;
+        setRelaxer(value);
+        },
           onError: (e) {
-        log("relaxer not init!!!");
+            _success = false;
           });
     });
+  }
+
+  bool isSuccess() {
+    return _success;
   }
 
   void setRelaxer(Relaxer relaxer) {
