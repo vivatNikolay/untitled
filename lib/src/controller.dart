@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:untitled/boxes.dart';
+import 'package:untitled/src/models/assignment.dart';
 import 'package:untitled/src/services/http_service.dart';
 import 'models/relaxer.dart';
 
@@ -8,6 +9,8 @@ class HttpController {
 
   final box = Boxes.getRelaxer();
   late Future<Relaxer> futureRelaxer;
+  late Future<List<Assignment>> futureAssignment;
+  List<Assignment> assignments = [];
   final HttpService _httpService = HttpService();
   bool _success = false;
 
@@ -18,6 +21,7 @@ class HttpController {
 
   void init(String sanKey, String email) async {
     futureRelaxer = _httpService.fetchRelaxer(sanKey, email);
+    futureAssignment = _httpService.fetchAssignments(sanKey, email);
     log(sanKey+" "+email);
     Timer(const Duration(milliseconds: 10), () {
       futureRelaxer.then((value) {
@@ -26,6 +30,12 @@ class HttpController {
         },
           onError: (e) {
             _success = false;
+          });
+      futureAssignment.then((value) {
+        assignments.addAll(value);
+      },
+          onError: (e) {
+            log('ERROR', error: e);
           });
     });
   }

@@ -1,25 +1,27 @@
+import 'date_time_interval.dart';
 
 class Assignment {
   String procedureName;
-  DateTime begin;
-  DateTime end;
+  List<DateTimeInterval> intervals;
 
   Assignment({
     required this.procedureName,
-    required this.begin,
-    required this.end
+    required this.intervals
   });
 
   factory Assignment.fromJson(Map<String, dynamic> json) {
+    List<DateTimeInterval> itemsList =
+      (List.from(json["intervals"])).map(
+              (i) => DateTimeInterval.fromJson(i)
+      ).toList();
     return Assignment(
         procedureName: json["procedureName"],
-        begin: json["begin"],
-        end: json["end"]
+        intervals: itemsList
     );
   }
 
   @override
   String toString() {
-    return 'Assignment{procedureName: $procedureName, begin: $begin, end: $end}';
+    return 'Assignment{procedureName: $procedureName, intervals: $intervals}';
   }
 }

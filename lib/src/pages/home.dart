@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:untitled/src/controller.dart';
 import 'package:untitled/src/pages/drawer.dart';
-import 'package:untitled/src/utils.dart';
-import 'calendar.dart';
+import 'package:untitled/src/pages/tabs/list_for_day.dart';
+import 'package:untitled/src/services/assignment_service.dart';
+import 'tabs/calendar.dart';
 
 class MyHomePage extends StatefulWidget {
   final String title = 'Расписание';
@@ -30,31 +29,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Center(
             child: TabBarView(children: [
-              listView(kToday),
-              listView(kTomorrow),
+              ListForDay(kToday),
+              ListForDay(kTomorrow),
               const TableAssignments()
             ])
         ),
         drawer: MyDrawer(),
       ),
     );
-  }
-
-  ListView listView(DateTime day) {
-    final DateFormat formatTime = DateFormat('HH:mm');
-    return ListView.builder(
-        itemCount: getAssignmentsByDay(day).length,
-        itemBuilder: (_, index) {
-          return Card(
-            shadowColor: Colors.deepPurple,
-            elevation: 4.0,
-            child: ListTile(
-              title: Text(getAssignmentsByDay(day)[index].procedureName),
-              subtitle: Text(
-                  formatTime.format(getAssignmentsByDay(day)[index].begin)),
-              trailing: const Icon(Icons.more_vert),
-            ),
-          );
-        });
   }
 }

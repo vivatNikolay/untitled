@@ -1,10 +1,7 @@
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:untitled/src/models/sanatorium.dart';
-import 'package:untitled/src/pages/tabs.dart';
+import 'package:untitled/src/pages/home.dart';
 import '../controller.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -18,7 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final HttpController _httpController = HttpController.instance;
   TextEditingController inputController = TextEditingController();
-  var frequencySanatoriumName;
+  var sanatoriumName;
   bool _textFieldsEmpty = false;
 
 
@@ -128,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
             value: code,
           ));
         }).values.toList(),
-        value: frequencySanatoriumName,
+        value: sanatoriumName,
         iconEnabledColor: Colors.white,
         iconDisabledColor: Colors.white70,
         dropdownColor: const Color(0xFF803DBB),
@@ -144,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
           onChanged: (String? newValue) {
           if (newValue != null) {
             setState(() {
-              frequencySanatoriumName = newValue;
+              sanatoriumName = newValue;
             });
           }
         },
@@ -218,7 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
           setState(() {
             inputController.text.isEmpty ? _textFieldsEmpty = true : _textFieldsEmpty = false;
           });
-          if (frequencySanatoriumName == null || inputController.text.isEmpty) {
+          if (sanatoriumName == null || inputController.text.isEmpty) {
             return;
           }
           _checkLogin();
@@ -228,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _checkLogin() async {
-    _httpController.init(frequencySanatoriumName, inputController.text);
+    _httpController.init(sanatoriumName, inputController.text);
       await Future.delayed(const Duration(seconds: 1));
       if (_httpController.isSuccess()) {
         Navigator.of(context).pushReplacement(

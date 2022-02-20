@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:untitled/src/models/assignment.dart';
-import '../utils.dart';
+import 'package:untitled/src/models/assignment_bean.dart';
+import '../../services/assignment_service.dart';
 
 class TableAssignments extends StatefulWidget {
   const TableAssignments({Key? key}) : super(key: key);
@@ -12,7 +12,7 @@ class TableAssignments extends StatefulWidget {
 }
 
 class _TableAssignmentsState extends State<TableAssignments> {
-  late final ValueNotifier<List<Assignment>> _selectedAssignments;
+  late final ValueNotifier<List<AssignmentBean>> _selectedAssignmentBeans;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   late final RangeSelectionMode _rangeSelectionMode;
   DateTime _focusedDay = DateTime.now();
@@ -22,18 +22,17 @@ class _TableAssignmentsState extends State<TableAssignments> {
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    _selectedAssignments = ValueNotifier(_getAssignmentsForDay(_selectedDay!));
+    _selectedAssignmentBeans = ValueNotifier(_getAssignmentsForDay(_selectedDay!));
     _rangeSelectionMode = RangeSelectionMode.toggledOff;
   }
 
   @override
   void dispose() {
-    _selectedAssignments.dispose();
+    _selectedAssignmentBeans.dispose();
     super.dispose();
   }
 
-  List<Assignment> _getAssignmentsForDay(DateTime day) {
-
+  List<AssignmentBean> _getAssignmentsForDay(DateTime day) {
     return getAssignmentsByDay(day);
   }
 
@@ -44,7 +43,7 @@ class _TableAssignmentsState extends State<TableAssignments> {
         _focusedDay = focusedDay;
       });
 
-      _selectedAssignments.value = _getAssignmentsForDay(selectedDay);
+      _selectedAssignmentBeans.value = _getAssignmentsForDay(selectedDay);
     }
   }
 
@@ -53,7 +52,7 @@ class _TableAssignmentsState extends State<TableAssignments> {
     return Scaffold(
       body: Column(
         children: [
-          TableCalendar<Assignment>(
+          TableCalendar<AssignmentBean>(
             firstDay: kFirstDay,
             lastDay: kLastDay,
             focusedDay: _focusedDay,
@@ -79,8 +78,8 @@ class _TableAssignmentsState extends State<TableAssignments> {
           ),
           const SizedBox(height: 8.0),
           Expanded(
-            child: ValueListenableBuilder<List<Assignment>>(
-              valueListenable: _selectedAssignments,
+            child: ValueListenableBuilder<List<AssignmentBean>>(
+              valueListenable: _selectedAssignmentBeans,
               builder: (context, value, _) {
                 return ListView.builder(
                   itemCount: value.length,
