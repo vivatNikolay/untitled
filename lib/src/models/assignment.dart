@@ -1,7 +1,13 @@
 import 'date_time_interval.dart';
+import 'package:hive/hive.dart';
 
-class Assignment {
+part 'assignment.g.dart';
+
+@HiveType(typeId:1)
+class Assignment extends HiveObject{
+  @HiveField(0)
   String procedureName;
+  @HiveField(1)
   List<DateTimeInterval> intervals;
 
   Assignment({

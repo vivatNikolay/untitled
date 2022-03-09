@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:untitled/src/models/sanatorium.dart';
@@ -15,8 +16,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final HttpController _httpController = HttpController.instance;
   TextEditingController inputController = TextEditingController();
-  var sanatoriumName;
-  bool _textFieldsEmpty = false;
+  var _sanatoriumName;
+  bool _textFieldEmpty = false;
+  bool _dropDownFieldEmpty = false;
 
 
   @override
@@ -110,9 +112,8 @@ class _LoginScreenState extends State<LoginScreen> {
     required String hintText,
   }) {
     return Material(
-      color: const Color(0xFF803DBB),
-      elevation: 2,
-      child: DropdownButton<String>(
+      color: Colors.transparent,
+      child: DropdownButtonFormField<String>(
         isExpanded: true,
         items: Sanatorium.sanatoriumMap.map((name, code) {
           return MapEntry(
@@ -125,23 +126,33 @@ class _LoginScreenState extends State<LoginScreen> {
             value: code,
           ));
         }).values.toList(),
-        value: sanatoriumName,
+        value: _sanatoriumName,
         iconEnabledColor: Colors.white,
         iconDisabledColor: Colors.white70,
         dropdownColor: const Color(0xFF803DBB),
-        underline: const SizedBox(),
-        hint: Text(
-            "    $hintText",
-            style: const TextStyle(
-              color: Colors.white70,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'PTSans',
-            ),
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: const Color(0xFF803DBB),
+          prefixIcon: const Icon(Icons.home_work_outlined, color: Colors.white),
+          hintText: hintText,
+          hintStyle: const TextStyle(
+            color: Colors.white70,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'PTSans',
           ),
+          errorText: _dropDownFieldEmpty ? 'Это поле не может быть пустым' : null,
+          errorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xFFBA1818), width: 1),
+          ),
+          errorStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color(0xFFBA1818),
+          ),
+        ),
           onChanged: (String? newValue) {
           if (newValue != null) {
             setState(() {
-              sanatoriumName = newValue;
+              _sanatoriumName = newValue;
             });
           }
         },
@@ -171,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
             fontWeight: FontWeight.bold,
             fontFamily: 'PTSans',
           ),
-          errorText: _textFieldsEmpty ? 'Это поле не может быть пустым' : null,
+          errorText: _textFieldEmpty ? 'Это поле не может быть пустым' : null,
           errorBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Color(0xFFBA1818), width: 1),
           ),
@@ -188,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return SizedBox(
       height: 50,
       width: double.infinity,
-      child: ElevatedButton(
+      child: OutlinedButton(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(
             Colors.white,
@@ -213,19 +224,19 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         onPressed: () async {
           setState(() {
-            inputController.text.isEmpty ? _textFieldsEmpty = true : _textFieldsEmpty = false;
+            inputController.text.isEmpty ? _textFieldEmpty = true : _textFieldEmpty = false;
+            _sanatoriumName == null ? _dropDownFieldEmpty = true : _dropDownFieldEmpty = false;
           });
-          if (sanatoriumName == null || inputController.text.isEmpty) {
-            return;
+          if (_sanatoriumName != null && inputController.text.isNotEmpty) {
+            _checkLogin();
           }
-          _checkLogin();
         },
       ),
     );
   }
 
   Future<void> _checkLogin() async {
-    _httpController.init(sanatoriumName, inputController.text);
+    _httpController.init(_sanatoriumName, inputController.text);
       await Future.delayed(const Duration(seconds: 1));
       if (_httpController.isSuccess()) {
         Navigator.of(context).pushReplacement(

@@ -1,6 +1,12 @@
+import 'package:hive/hive.dart';
 
-class DateTimeInterval {
+part 'date_time_interval.g.dart';
+
+@HiveType(typeId:2)
+class DateTimeInterval extends HiveObject {
+  @HiveField(0)
   DateTime begin;
+  @HiveField(1)
   DateTime end;
 
   DateTimeInterval({

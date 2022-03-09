@@ -13,14 +13,15 @@ final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
 
 List<AssignmentBean> getAssignmentsByDay(DateTime day) {
   List<AssignmentBean> assignmentBeans = [];
-  for (Assignment el in _httpController.assignments) {
+  List<Assignment> _listOfAssignments = _httpController.getAssignments();
+  for (Assignment el in _listOfAssignments) {
     for (DateTimeInterval interval in el.intervals) {
       assignmentBeans.add(AssignmentBean(el.procedureName, interval.begin, interval.end));
     }
   }
   assignmentBeans.removeWhere((el) => !DateUtils.isSameDay(el.begin, day));
   assignmentBeans.sort((AssignmentBean a, AssignmentBean b) =>
-  a.begin.compareTo(b.begin));
+    a.begin.compareTo(b.begin));
 
   return assignmentBeans;
 }

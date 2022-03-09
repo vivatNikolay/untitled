@@ -7,10 +7,10 @@ import 'models/relaxer.dart';
 
 class HttpController {
 
-  final box = Boxes.getRelaxer();
+  final boxRelaxer = Boxes.getRelaxer();
+  final boxAssignments = Boxes.getAssignment();
   late Future<Relaxer> futureRelaxer;
   late Future<List<Assignment>> futureAssignment;
-  List<Assignment> assignments = [];
   final HttpService _httpService = HttpService();
   bool _success = false;
 
@@ -32,7 +32,7 @@ class HttpController {
             _success = false;
           });
       futureAssignment.then((value) {
-        assignments.addAll(value);
+        setAssignments(value);
       },
           onError: (e) {
             log('ERROR', error: e);
@@ -45,14 +45,28 @@ class HttpController {
   }
 
   void setRelaxer(Relaxer relaxer) {
-    box.put(0, relaxer);
+    boxRelaxer.put(0, relaxer);
   }
 
-  Relaxer? getRelaxer() {
-    return box.get(0);
+  Relaxer getRelaxer() {
+    return boxRelaxer.get(0)
+        ?? Relaxer(email: 'privet@gmail.com', name: 'Name', surname: 'Surname', sex: true);
   }
 
   void deleteRelaxer() {
-    box.get(0)!.delete();
+    boxRelaxer.get(0)!.delete();
+  }
+
+  void setAssignments(Iterable<Assignment> assignments) {
+    boxAssignments.addAll(assignments);
+  }
+
+  List<Assignment> getAssignments() {
+    Iterable<Assignment> list = boxAssignments.values;
+    return list.toList();
+  }
+
+  void deleteAssignments() {
+    boxAssignments.clear();
   }
 }

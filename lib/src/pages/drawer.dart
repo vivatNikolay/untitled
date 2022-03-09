@@ -12,7 +12,7 @@ class MyDrawer extends StatelessWidget {
   final HttpController _httpController = HttpController.instance;
 
   MyDrawer({Key? key}) : super(key: key) {
-    relaxer = _httpController.getRelaxer() ?? Relaxer(email: 'privet@gmail.com', name: 'Name', surname: 'Surname', sex: true);
+    relaxer = _httpController.getRelaxer();
   }
 
   @override
@@ -77,6 +77,7 @@ class MyDrawer extends StatelessWidget {
                         builder: (context) => const LoginScreen()
                     ));
                 _httpController.deleteRelaxer();
+                _httpController.deleteAssignments();
               },
             ),
           ],

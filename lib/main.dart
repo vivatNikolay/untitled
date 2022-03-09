@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:untitled/src/models/assignment.dart';
+import 'package:untitled/src/models/date_time_interval.dart';
 import 'package:untitled/src/models/relaxer.dart';
 import 'package:untitled/src/pages/login.dart';
 import 'package:untitled/src/pages/home.dart';
@@ -14,7 +16,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(RelaxerAdapter());
+  Hive.registerAdapter(AssignmentAdapter());
+  Hive.registerAdapter(DateTimeIntervalAdapter());
   await Hive.openBox<Relaxer>('relaxer');
+  await Hive.openBox<Assignment>('assignment');
 
   runApp(const MyApp());
 }
