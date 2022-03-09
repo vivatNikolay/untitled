@@ -66,6 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   _buildDropDownField(
                     hintText: 'Выберите санаторий',
+                    prefixedIcon: const Icon(Icons.home_work_outlined, color: Colors.white),
                   ),
                   const SizedBox(
                     height: 10,
@@ -109,6 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildDropDownField({
+    Widget? prefixedIcon,
     required String hintText,
   }) {
     return Material(
@@ -120,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
               code,
           DropdownMenuItem<String>(
             child: Text(
-                "    $name",
+                name,
                 style: const TextStyle(color: Colors.white),
             ),
             value: code,
@@ -133,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: InputDecoration(
           filled: true,
           fillColor: const Color(0xFF803DBB),
-          prefixIcon: const Icon(Icons.home_work_outlined, color: Colors.white),
+          prefixIcon: prefixedIcon,
           hintText: hintText,
           hintStyle: const TextStyle(
             color: Colors.white70,
@@ -141,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
             fontFamily: 'PTSans',
           ),
           errorText: _dropDownFieldEmpty ? 'Это поле не может быть пустым' : null,
-          errorBorder: const OutlineInputBorder(
+          errorBorder: const UnderlineInputBorder(
             borderSide: BorderSide(color: Color(0xFFBA1818), width: 1),
           ),
           errorStyle: const TextStyle(
@@ -183,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
             fontFamily: 'PTSans',
           ),
           errorText: _textFieldEmpty ? 'Это поле не может быть пустым' : null,
-          errorBorder: const OutlineInputBorder(
+          errorBorder: const UnderlineInputBorder(
             borderSide: BorderSide(color: Color(0xFFBA1818), width: 1),
           ),
           errorStyle: const TextStyle(
