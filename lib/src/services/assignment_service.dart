@@ -8,8 +8,6 @@ final HttpController _httpController = HttpController.instance;
 
 final kToday = DateTime.now();
 final kTomorrow = DateTime(kToday.year, kToday.month, kToday.day + 1);
-final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
-final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
 
 List<AssignmentBean> getAssignmentsByDay(DateTime day) {
   List<AssignmentBean> assignmentBeans = [];

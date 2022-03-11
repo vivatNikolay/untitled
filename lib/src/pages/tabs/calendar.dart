@@ -12,6 +12,8 @@ class TableAssignments extends StatefulWidget {
 }
 
 class _TableAssignmentsState extends State<TableAssignments> {
+  final _kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
+  final _kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
   late final ValueNotifier<List<AssignmentBean>> _selectedAssignmentBeans;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   late final RangeSelectionMode _rangeSelectionMode;
@@ -53,16 +55,18 @@ class _TableAssignmentsState extends State<TableAssignments> {
       body: Column(
         children: [
           TableCalendar<AssignmentBean>(
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
+            //locale: 'en_US',
+            firstDay: _kFirstDay,
+            lastDay: _kLastDay,
             focusedDay: _focusedDay,
             selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
             calendarFormat: _calendarFormat,
             rangeSelectionMode: _rangeSelectionMode,
             eventLoader: _getAssignmentsForDay,
             startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: CalendarStyle(
+            calendarStyle: const CalendarStyle(
               outsideDaysVisible: true,
+              weekendTextStyle: TextStyle(color: Color(0xFFBA1818)),
             ),
             onDaySelected: _onDaySelected,
             onFormatChanged: (format) {
@@ -97,8 +101,7 @@ class _TableAssignmentsState extends State<TableAssignments> {
                       child: ListTile(
                         onTap: () => print('${value[index]}'),
                         title: Text('${value[index].procedureName} '
-                            '${formatTime.format(value[index].begin)}-'
-                            '${formatTime.format(value[index].end)}'),
+                            '${formatTime.format(value[index].begin)}'),
                       ),
                     );
                   },

@@ -14,12 +14,27 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
-  final HttpController _httpController = HttpController.instance;
-  TextEditingController inputController = TextEditingController();
+  late final HttpController _httpController;
+  late TextEditingController inputController;
   var _sanatoriumName;
   bool _textFieldEmpty = false;
   bool _dropDownFieldEmpty = false;
+  bool _isButtonActive = true;
 
+  @override
+  void initState() {
+    super.initState();
+
+    _httpController = HttpController.instance;
+    inputController = TextEditingController();
+    inputController.addListener(() {
+      if (inputController.text.isNotEmpty) {
+        setState(() {
+          _isButtonActive = true;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +148,11 @@ class _LoginScreenState extends State<LoginScreen> {
         iconDisabledColor: Colors.white70,
         dropdownColor: const Color(0xFF803DBB),
         decoration: InputDecoration(
+          border: _dropDownFieldEmpty ?
+            const UnderlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFFBA1818), width: 1),
+            )
+            : InputBorder.none,
           filled: true,
           fillColor: const Color(0xFF803DBB),
           prefixIcon: prefixedIcon,
@@ -143,9 +163,6 @@ class _LoginScreenState extends State<LoginScreen> {
             fontFamily: 'PTSans',
           ),
           errorText: _dropDownFieldEmpty ? 'Это поле не может быть пустым' : null,
-          errorBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFFBA1818), width: 1),
-          ),
           errorStyle: const TextStyle(
             fontWeight: FontWeight.bold,
             color: Color(0xFFBA1818),
@@ -155,6 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (newValue != null) {
             setState(() {
               _sanatoriumName = newValue;
+              _isButtonActive = true;
             });
           }
         },
@@ -174,7 +192,11 @@ class _LoginScreenState extends State<LoginScreen> {
         cursorWidth: 2,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
-          border: InputBorder.none,
+          border: _textFieldEmpty ?
+            const UnderlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFFBA1818), width: 1),
+            )
+            : InputBorder.none,
           filled: true,
           fillColor: const Color(0xFF803DBB),
           prefixIcon: prefixedIcon,
@@ -185,9 +207,6 @@ class _LoginScreenState extends State<LoginScreen> {
             fontFamily: 'PTSans',
           ),
           errorText: _textFieldEmpty ? 'Это поле не может быть пустым' : null,
-          errorBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFFBA1818), width: 1),
-          ),
           errorStyle: const TextStyle(
             fontWeight: FontWeight.bold,
             color: Color(0xFFBA1818),
@@ -202,18 +221,14 @@ class _LoginScreenState extends State<LoginScreen> {
       height: 50,
       width: double.infinity,
       child: OutlinedButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
-            Colors.white,
-          ),
-          elevation: MaterialStateProperty.all(6),
-          shape: MaterialStateProperty.all(
-            const RoundedRectangleBorder(
+        style: OutlinedButton.styleFrom(
+          backgroundColor: Colors.white,
+          elevation: 6,
+          shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(10),
               ),
             ),
-          ),
         ),
         child: const Text(
           'Войти',
@@ -224,21 +239,23 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Colors.black,
           ),
         ),
-        onPressed: () async {
+        onPressed: _isButtonActive ? () async {
           setState(() {
-            inputController.text.isEmpty ? _textFieldEmpty = true : _textFieldEmpty = false;
+            inputController.text.trim().isEmpty ? _textFieldEmpty = true : _textFieldEmpty = false;
             _sanatoriumName == null ? _dropDownFieldEmpty = true : _dropDownFieldEmpty = false;
+            _isButtonActive = false;
           });
           if (_sanatoriumName != null && inputController.text.isNotEmpty) {
             _checkLogin();
           }
-        },
+        }
+        : null,
       ),
     );
   }
 
   Future<void> _checkLogin() async {
-    _httpController.init(_sanatoriumName, inputController.text);
+    _httpController.init(_sanatoriumName, inputController.text.trim());
       await Future.delayed(const Duration(seconds: 1));
       if (_httpController.isSuccess()) {
         Navigator.of(context).pushReplacement(
