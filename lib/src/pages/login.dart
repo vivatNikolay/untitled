@@ -44,16 +44,10 @@ class _LoginScreenState extends State<LoginScreen> {
           width: double.infinity,
           height: double.infinity,
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomRight,
-              colors: [
-                Color(0xFF6033B1),
-                Color(0xFF8439BF),
-                Color(0xFF9E41D0),
-                Color(0xFF8E3DC7),
-                Color(0xFF6F3BC2),
-              ],
+            image: DecorationImage(
+              image: AssetImage("assets/images/medicine.png"),
+              alignment: Alignment.bottomRight,
+              fit: BoxFit.cover,
             ),
           ),
           child: SingleChildScrollView(
@@ -146,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
         value: _sanatoriumName,
         iconEnabledColor: Colors.white,
         iconDisabledColor: Colors.white70,
-        dropdownColor: const Color(0xFF803DBB),
+        dropdownColor: const Color(0xFF75A79E),
         decoration: InputDecoration(
           border: _dropDownFieldEmpty ?
             const UnderlineInputBorder(
@@ -154,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
             )
             : InputBorder.none,
           filled: true,
-          fillColor: const Color(0xFF803DBB),
+          fillColor: const Color(0xFF72A39A).withOpacity(0.95),
           prefixIcon: prefixedIcon,
           hintText: hintText,
           hintStyle: const TextStyle(
@@ -198,7 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
             )
             : InputBorder.none,
           filled: true,
-          fillColor: const Color(0xFF803DBB),
+          fillColor: const Color(0xFF72A39A).withOpacity(0.9),
           prefixIcon: prefixedIcon,
           hintText: hintText,
           hintStyle: const TextStyle(
@@ -222,8 +216,8 @@ class _LoginScreenState extends State<LoginScreen> {
       width: double.infinity,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
-          backgroundColor: Colors.white,
-          elevation: 6,
+          backgroundColor: Color(0xFFA4C1BD).withOpacity(0.7),
+          side: const BorderSide (color: Colors.white, width: 2),
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(10),
@@ -234,9 +228,9 @@ class _LoginScreenState extends State<LoginScreen> {
           'Войти',
           style: TextStyle(
             fontFamily: 'PT-Sans',
-            fontSize: 16,
+            fontSize: 19,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
         onPressed: _isButtonActive ? () async {

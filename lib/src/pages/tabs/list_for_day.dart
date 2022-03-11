@@ -20,7 +20,7 @@ class _ListForDayState extends State<ListForDay> {
     final DateFormat formatTime = DateFormat('HH:mm');
     if (getAssignmentsByDay(day).isEmpty) {
       return const Center(
-          child: Text("По расписанию ничего нет",
+          child: Text("Процедур нет",
             style: TextStyle(
                 color: Color(0xFF7B7B7B),
                 fontSize: 19.0,
@@ -32,7 +32,7 @@ class _ListForDayState extends State<ListForDay> {
         itemCount: getAssignmentsByDay(day).length,
         itemBuilder: (_, index) {
           return Card(
-            shadowColor: Colors.deepPurple,
+            shadowColor: const Color(0xFF75AAA1),
             elevation: 4.0,
             child: ListTile(
               title: Text(getAssignmentsByDay(day)[index].procedureName),

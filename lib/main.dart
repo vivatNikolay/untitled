@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/src/models/assignment.dart';
@@ -38,7 +37,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Scheduler',
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: const Color(0xFF81B7AE),
+        ),
         visualDensity: VisualDensity.adaptivePlatformDensity
       ),
       home: home,

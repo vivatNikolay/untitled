@@ -67,6 +67,14 @@ class _TableAssignmentsState extends State<TableAssignments> {
             calendarStyle: const CalendarStyle(
               outsideDaysVisible: true,
               weekendTextStyle: TextStyle(color: Color(0xFFBA1818)),
+              selectedDecoration : BoxDecoration(
+                color: Color(0xFF75AAA1),
+                shape: BoxShape.circle,
+              ),
+              todayDecoration:  BoxDecoration(
+                color: Color(0xFFACCDC8),
+                shape: BoxShape.circle,
+              ),
             ),
             onDaySelected: _onDaySelected,
             onFormatChanged: (format) {

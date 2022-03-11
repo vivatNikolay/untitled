@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/src/pages/login.dart';
-import '../../boxes.dart';
 import '../controller.dart';
 import '../models/relaxer.dart';
 
@@ -24,7 +23,7 @@ class MyDrawer extends StatelessWidget {
             DrawerHeader(
                 decoration: const BoxDecoration(
                     gradient: LinearGradient(
-                        colors: [Color(0xFF4A148C), Colors.deepPurple])),
+                        colors: [Color(0xFF75A39E), Color(0xFF81B7AE)])),
                 child: Stack(
                   children: <Widget>[
                     Align(

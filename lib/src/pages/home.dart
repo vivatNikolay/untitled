@@ -21,11 +21,14 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
-          bottom: const TabBar(tabs: [
-            Tab(text: 'Сегодня'),
-            Tab(text: 'Завтра'),
-            Tab(icon: Icon(Icons.calendar_today_rounded)),
-          ],),
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: 'Сегодня'),
+              Tab(text: 'Завтра'),
+              Tab(icon: Icon(Icons.calendar_today_rounded)),
+            ],
+            indicatorColor: Colors.blueGrey
+          ),
         ),
         body: Center(
             child: TabBarView(children: [
