@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/src/models/assignment_bean.dart';
-import '../controller.dart';
+import '../controllers/controller.dart';
 import '../models/assignment.dart';
 import '../models/date_time_interval.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/src/pages/login.dart';
-import '../controller.dart';
+import '../controllers/controller.dart';
 import '../models/relaxer.dart';
 
 class MyDrawer extends StatelessWidget {

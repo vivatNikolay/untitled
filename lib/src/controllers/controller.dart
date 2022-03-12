@@ -1,47 +1,65 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:untitled/boxes.dart';
+import 'package:untitled/src/controllers/response_state.dart';
 import 'package:untitled/src/models/assignment.dart';
 import 'package:untitled/src/services/http_service.dart';
-import 'models/relaxer.dart';
+import '../models/relaxer.dart';
 
 class HttpController {
 
+  final HttpService _httpService = HttpService();
   final boxRelaxer = Boxes.getRelaxer();
   final boxAssignments = Boxes.getAssignment();
+
+  late Relaxer _relaxer;
+  late List<Assignment> _assignments;
+
   late Future<Relaxer> futureRelaxer;
   late Future<List<Assignment>> futureAssignment;
-  final HttpService _httpService = HttpService();
-  bool _success = false;
+
+  late ResponseState _state;
 
   HttpController._privateConstructor();
   static final HttpController _instance = HttpController._privateConstructor();
 
   static HttpController get instance => _instance;
 
-  void init(String sanKey, String email) async {
+  void fetchData(String sanKey, String email) async {
+    _state = ResponseState.processing;
     futureRelaxer = _httpService.fetchRelaxer(sanKey, email);
     futureAssignment = _httpService.fetchAssignments(sanKey, email);
     log(sanKey+" "+email);
     Timer(const Duration(milliseconds: 10), () {
       futureRelaxer.then((value) {
-        _success = true;
-        setRelaxer(value);
+        _state = ResponseState.success;
+        _relaxer = value;
         },
           onError: (e) {
-            _success = false;
+            _state = ResponseState.failed;
+            log('futureRelaxer', error: e);
           });
       futureAssignment.then((value) {
-        setAssignments(value);
+        _assignments = value;
       },
           onError: (e) {
-            log('ERROR', error: e);
+            _state = ResponseState.failed;
+            log('futureAssignment', error: e);
           });
     });
   }
 
   bool isSuccess() {
-    return _success;
+    return _state == ResponseState.success;
+  }
+
+  bool isProcessing() {
+    return _state == ResponseState.processing;
+  }
+
+  void writeToDB() {
+    setRelaxer(_relaxer);
+    setAssignments(_assignments);
   }
 
   void setRelaxer(Relaxer relaxer) {

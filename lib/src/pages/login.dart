@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:untitled/src/models/sanatorium.dart';
 import 'package:untitled/src/pages/home.dart';
-import '../controller.dart';
+import '../controllers/controller.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -249,18 +249,28 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _checkLogin() async {
-    _httpController.init(_sanatoriumName, inputController.text.trim());
-      await Future.delayed(const Duration(seconds: 1));
-      if (_httpController.isSuccess()) {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const MyHomePage()));
-      } else {
-        Fluttertoast.showToast(
-            msg: "Отдыхающий не найден",
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 17.0
-        );
+    _httpController.fetchData(_sanatoriumName, inputController.text.trim());
+    await wait();
+    if (_httpController.isSuccess()) {
+      _httpController.writeToDB();
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const MyHomePage()));
+    } else {
+      Fluttertoast.showToast(
+          msg: "Отдыхающий не найден",
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 17.0);
+    }
+  }
+
+  Future<void> wait() async {
+    int chanceCount = 5;
+    for (int i = 0; i < chanceCount; i++) {
+      if (!_httpController.isProcessing()) {
+        break;
       }
+      await Future.delayed(const Duration(seconds: 1));
+    }
   }
 }
