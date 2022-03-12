@@ -258,10 +258,13 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       Fluttertoast.showToast(
           msg: "Отдыхающий не найден",
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.redAccent,
           textColor: Colors.white,
           fontSize: 17.0);
     }
+    setState(() {
+      _isButtonActive = true;
+    });
   }
 
   Future<void> wait() async {
