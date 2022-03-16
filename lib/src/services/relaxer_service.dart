@@ -8,9 +8,10 @@ class RelaxerService {
 
   void add(Relaxer relaxer) {
     relaxer.isActive = true;
-    if (boxRelaxer.values.any((el) => el.email != relaxer.email)) {
-      boxRelaxer.add(relaxer);
+    if (boxRelaxer.values.any((el) => el.email == relaxer.email)) {
+      return;
     }
+    boxRelaxer.add(relaxer);
   }
 
   void delete() {
