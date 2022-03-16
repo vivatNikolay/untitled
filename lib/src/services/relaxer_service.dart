@@ -7,10 +7,14 @@ class RelaxerService {
   final boxRelaxer = Boxes.getRelaxer();
 
   void add(Relaxer relaxer) {
-    relaxer.isActive = true;
-    if (boxRelaxer.values.any((el) => el.email == relaxer.email)) {
-      return;
+    for (Relaxer el in boxRelaxer.values) {
+      if (el.email == relaxer.email) {
+        el.isActive = true;
+        el.save();
+        return;
+      }
     }
+    relaxer.isActive = true;
     boxRelaxer.add(relaxer);
   }
 
