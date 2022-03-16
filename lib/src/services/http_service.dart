@@ -5,7 +5,7 @@ import '../models/assignment.dart';
 import '../models/relaxer.dart';
 
 class HttpService {
-  final String _url = "https://admin:admin@api.byport.by/";
+  final String _url = "https://admin:byport@api.byport.by/";
   final String _postfix = "/mobile/";
   final Map sanMap = Sanatorium.sanatoriumMap;
 

@@ -1,16 +1,18 @@
 import 'dart:async';
 import 'dart:developer';
-import 'package:untitled/boxes.dart';
 import 'package:untitled/src/controllers/response_state.dart';
 import 'package:untitled/src/models/assignment.dart';
+import 'package:untitled/src/services/assignment_service.dart';
 import 'package:untitled/src/services/http_service.dart';
+import '../models/assignment_bean.dart';
 import '../models/relaxer.dart';
+import '../services/relaxer_service.dart';
 
 class HttpController {
 
   final HttpService _httpService = HttpService();
-  final boxRelaxer = Boxes.getRelaxer();
-  final boxAssignments = Boxes.getAssignment();
+  final AssignmentService _assignmentService = AssignmentService();
+  final RelaxerService _relaxerService = RelaxerService();
 
   late Relaxer _relaxer;
   late List<Assignment> _assignments;
@@ -25,20 +27,30 @@ class HttpController {
 
   static HttpController get instance => _instance;
 
-  void fetchData(String sanKey, String email) async {
+  void fetchData(String sanKey, String email) {
     _state = ResponseState.processing;
+    fetchRelaxer(sanKey, email);
+    fetchAssignments(sanKey, email);
+    log('$sanKey $email');
+  }
+
+  void fetchRelaxer(String sanKey, String email) async {
     futureRelaxer = _httpService.fetchRelaxer(sanKey, email);
-    futureAssignment = _httpService.fetchAssignments(sanKey, email);
-    log(sanKey+" "+email);
     Timer(const Duration(milliseconds: 10), () {
       futureRelaxer.then((value) {
         _state = ResponseState.success;
         _relaxer = value;
-        },
+      },
           onError: (e) {
             _state = ResponseState.failed;
             log('futureRelaxer', error: e);
           });
+    });
+  }
+
+  void fetchAssignments(String sanKey, String email) async {
+    futureAssignment = _httpService.fetchAssignments(sanKey, email);
+    Timer(const Duration(milliseconds: 10), () {
       futureAssignment.then((value) {
         _assignments = value;
       },
@@ -58,33 +70,25 @@ class HttpController {
   }
 
   void writeToDB() {
-    setRelaxer(_relaxer);
-    setAssignments(_assignments);
+    _relaxerService.add(_relaxer);
+    _assignmentService.addAll(_assignments);
   }
 
-  void setRelaxer(Relaxer relaxer) {
-    boxRelaxer.put(0, relaxer);
+  void exitFromAccount() {
+    _relaxerService.delete();
+    _assignmentService.delete();
   }
 
-  Relaxer getRelaxer() {
-    return boxRelaxer.get(0)
-        ?? Relaxer(email: 'privet@gmail.com', name: 'Name', surname: 'Surname', sex: true);
+  Relaxer getActiveRelaxer() {
+   return _relaxerService.getActive();
   }
 
-  void deleteRelaxer() {
-    boxRelaxer.get(0)!.delete();
+  void addAccount() {
+    _relaxerService.makeInActive();
+    _assignmentService.delete();
   }
 
-  void setAssignments(Iterable<Assignment> assignments) {
-    boxAssignments.addAll(assignments);
-  }
-
-  List<Assignment> getAssignments() {
-    Iterable<Assignment> list = boxAssignments.values;
-    return list.toList();
-  }
-
-  void deleteAssignments() {
-    boxAssignments.clear();
+  List<AssignmentBean> getAssignmentsByDay(DateTime day) {
+    return _assignmentService.getAssignmentsByDay(day);
   }
 }

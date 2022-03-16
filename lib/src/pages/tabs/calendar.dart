@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:untitled/src/controllers/controller.dart';
 import 'package:untitled/src/models/assignment_bean.dart';
-import '../../services/assignment_service.dart';
 
 class TableAssignments extends StatefulWidget {
   const TableAssignments({Key? key}) : super(key: key);
@@ -12,8 +12,10 @@ class TableAssignments extends StatefulWidget {
 }
 
 class _TableAssignmentsState extends State<TableAssignments> {
-  final _kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
-  final _kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
+
+  late final HttpController _httpController;
+  final _kFirstDay = DateTime(DateTime.now().year, DateTime.now().month - 3, DateTime.now().day);
+  final _kLastDay = DateTime(DateTime.now().year, DateTime.now().month + 3, DateTime.now().day);
   late final ValueNotifier<List<AssignmentBean>> _selectedAssignmentBeans;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   late final RangeSelectionMode _rangeSelectionMode;
@@ -23,6 +25,8 @@ class _TableAssignmentsState extends State<TableAssignments> {
   @override
   void initState() {
     super.initState();
+
+    _httpController = HttpController.instance;
     _selectedDay = _focusedDay;
     _selectedAssignmentBeans = ValueNotifier(_getAssignmentsForDay(_selectedDay!));
     _rangeSelectionMode = RangeSelectionMode.toggledOff;
@@ -35,7 +39,7 @@ class _TableAssignmentsState extends State<TableAssignments> {
   }
 
   List<AssignmentBean> _getAssignmentsForDay(DateTime day) {
-    return getAssignmentsByDay(day);
+    return _httpController.getAssignmentsByDay(day);
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {

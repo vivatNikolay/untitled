@@ -6,12 +6,12 @@ import '../models/relaxer.dart';
 
 class MyDrawer extends StatelessWidget {
 
-  late final Relaxer relaxer;
+  late Relaxer relaxer;
 
   final HttpController _httpController = HttpController.instance;
 
   MyDrawer({Key? key}) : super(key: key) {
-    relaxer = _httpController.getRelaxer();
+    relaxer = _httpController.getActiveRelaxer();
   }
 
   @override
@@ -55,30 +55,39 @@ class MyDrawer extends StatelessWidget {
                               color: Colors.white,
                               fontSize: 17.0,
                               fontFamily: 'TimesNewRoman'),
-                        )),
-                    const Align(
-                      alignment: Alignment.topRight,
-                      child: Icon(
-                        Icons.settings,
-                        size: 26,
-                        color: Colors.white,
-                      ),
-                    )
+                        ))
                   ],
                 )),
             ListTile(
-              leading: const Icon(Icons.logout),
+              leading: const Icon(Icons.person_add),
               minLeadingWidth: 24,
-              title: const Text('Выход'),
+              title: const Text('Добавить аккаунт'),
               onTap: () {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                         builder: (context) => const LoginScreen()
                     ));
-                _httpController.deleteRelaxer();
-                _httpController.deleteAssignments();
+                _httpController.addAccount();
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.group),
+              minLeadingWidth: 24,
+              title: const Text('Сменить аккаунт'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              minLeadingWidth: 24,
+              title: const Text('Выйти из аккаунта'),
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                        builder: (context) => const LoginScreen()
+                    ));
+                _httpController.exitFromAccount();
+              },
+            )
           ],
         ));
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:untitled/src/controllers/controller.dart';
 
+import '../../models/assignment_bean.dart';
 import '../../services/assignment_service.dart';
 
 class ListForDay extends StatefulWidget {
@@ -12,13 +14,24 @@ class ListForDay extends StatefulWidget {
 }
 
 class _ListForDayState extends State<ListForDay> {
+
+  late final HttpController _httpController;
+  late List<AssignmentBean> _assignments;
   DateTime day;
   _ListForDayState(this.day);
 
   @override
+  void initState() {
+    super.initState();
+
+    _httpController = HttpController.instance;
+    _assignments = _httpController.getAssignmentsByDay(day);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final DateFormat formatTime = DateFormat('HH:mm');
-    if (getAssignmentsByDay(day).isEmpty) {
+    if (_assignments.isEmpty) {
       return const Center(
           child: Text("Процедур нет",
             style: TextStyle(
@@ -29,15 +42,15 @@ class _ListForDayState extends State<ListForDay> {
       );
     }
     return ListView.builder(
-        itemCount: getAssignmentsByDay(day).length,
+        itemCount: _assignments.length,
         itemBuilder: (_, index) {
           return Card(
             shadowColor: const Color(0xFF75AAA1),
             elevation: 4.0,
             child: ListTile(
-              title: Text(getAssignmentsByDay(day)[index].procedureName),
+              title: Text(_assignments[index].procedureName),
               subtitle: Text(
-                  formatTime.format(getAssignmentsByDay(day)[index].begin)),
+                  formatTime.format(_assignments[index].begin)),
               trailing: const Icon(Icons.more_vert),
             ),
           );
