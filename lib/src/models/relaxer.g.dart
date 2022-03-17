@@ -22,13 +22,14 @@ class RelaxerAdapter extends TypeAdapter<Relaxer> {
       surname: fields[2] as String,
       sex: fields[3] as bool,
       isActive: fields[4] as bool,
+      sanatorium: fields[5] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Relaxer obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.email)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class RelaxerAdapter extends TypeAdapter<Relaxer> {
       ..writeByte(3)
       ..write(obj.sex)
       ..writeByte(4)
-      ..write(obj.isActive);
+      ..write(obj.isActive)
+      ..writeByte(5)
+      ..write(obj.sanatorium);
   }
 
   @override

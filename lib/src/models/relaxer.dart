@@ -14,13 +14,16 @@ class Relaxer extends HiveObject{
   bool sex;
   @HiveField(4)
   bool isActive;
+  @HiveField(5)
+  String sanatorium;
 
   Relaxer({
     required this.email,
     required this.name,
     required this.surname,
     required this.sex,
-    required this.isActive
+    required this.isActive,
+    required this.sanatorium,
   });
 
   factory Relaxer.fromJson(Map<String, dynamic> json) {
@@ -30,6 +33,7 @@ class Relaxer extends HiveObject{
     surname : json["surname"],
     sex : json["sex"],
     isActive: false,
+    sanatorium: "",
     );
   }
 }

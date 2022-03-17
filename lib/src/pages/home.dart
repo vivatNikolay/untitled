@@ -37,11 +37,11 @@ class _MyHomePageState extends State<MyHomePage> {
           actions: <Widget>[
             Padding(
                 padding: const EdgeInsets.only(right: 20.0),
-                child: GestureDetector(
-                  onTap: () {
+                child: IconButton(
+                  onPressed: () async {
 
                   },
-                  child: const Icon(Icons.update),
+                  icon: const Icon(Icons.update),
                 )
             ),
           ],
