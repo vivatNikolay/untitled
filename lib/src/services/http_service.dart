@@ -12,7 +12,9 @@ class HttpService {
   Future<Relaxer> fetchRelaxer(String sanKey, String email) async {
     Response res = await get(Uri.parse(_url+sanKey+_postfix+email+"/"));
     if (res.statusCode == 200) {
-      return Relaxer.fromJson(jsonDecode(res.body));
+      Relaxer relaxer = Relaxer.fromJson(jsonDecode(res.body));
+      relaxer.sanatorium = sanKey;
+      return relaxer;
     } else {
       throw "Unable to retrieve relaxer.";
     }

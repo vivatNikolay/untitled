@@ -28,7 +28,14 @@ class RelaxerService {
         return el;
       }
     }
-    return Relaxer(email: 'privet@gmail.com', name: 'Name', surname: 'Surname', sex: true, isActive: true);
+    return Relaxer(
+        email: 'privet@gmail.com',
+        name: 'Name',
+        surname: 'Surname',
+        sex: true,
+        isActive: true,
+        sanatorium: ""
+    );
   }
 
   void makeInActive() {
