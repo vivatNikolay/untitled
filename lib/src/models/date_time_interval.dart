@@ -26,6 +26,8 @@ DateTime parseFromLocaleDateTime(String string) {
   int year = int.parse(string.substring(0, 4));
   int month = int.parse(string.substring(5, 7));
   int day = int.parse(string.substring(8, 10));
+  int hour = int.parse(string.substring(11, 13));
+  int minute = int.parse(string.substring(14, 16));
 
-  return DateTime(year, month, day);
+  return DateTime(year, month, day, hour, minute);
 }
