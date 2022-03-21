@@ -1,13 +1,12 @@
 import 'dart:io';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:untitled/src/controllers/controller.dart';
 import 'package:untitled/src/models/assignment.dart';
 import 'package:untitled/src/models/date_time_interval.dart';
 import 'package:untitled/src/models/relaxer.dart';
 import 'package:untitled/src/pages/login.dart';
 import 'package:untitled/src/pages/home.dart';
-
-import 'boxes.dart';
 
 void main() async {
   HttpOverrides.global = MyHttpOverrides ();
@@ -28,11 +27,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final HttpController _httpController = HttpController.instance;
     StatefulWidget home;
-    if (Boxes.getRelaxer().isEmpty) {
-      home = const LoginScreen();
-    } else {
+    if (_httpController.hasActive()) {
       home = const MyHomePage();
+    } else {
+      home = const LoginScreen();
     }
     return MaterialApp(
       title: 'Scheduler',

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:untitled/src/pages/list_relaxers.dart';
 import 'package:untitled/src/pages/login.dart';
 import '../controllers/controller.dart';
 import '../models/relaxer.dart';
@@ -67,14 +68,19 @@ class MyDrawer extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => const LoginScreen()
                     ));
-                _httpController.addAccount();
+                _httpController.makeInActive();
               },
             ),
             ListTile(
               leading: const Icon(Icons.group),
               minLeadingWidth: 24,
               title: const Text('Сменить аккаунт'),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                        builder: (context) => ListRelaxers(_httpController.getRelaxers())
+                    ));
+              },
             ),
             ListTile(
               leading: const Icon(Icons.logout),

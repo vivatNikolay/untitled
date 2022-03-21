@@ -3,7 +3,7 @@ import 'package:untitled/src/models/assignment.dart';
 import 'package:untitled/src/models/relaxer.dart';
 
 class Boxes {
-  static Box<Relaxer> getRelaxer() =>
+  static Box<Relaxer> getRelaxers() =>
       Hive.box<Relaxer>('relaxer');
 
   static Box<Assignment> getAssignment() =>

@@ -1,37 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:untitled/src/controllers/controller.dart';
-
 import '../../models/assignment_bean.dart';
-import '../../services/assignment_service.dart';
 
 class ListForDay extends StatefulWidget {
-  DateTime day;
-  ListForDay(this.day, {Key? key}) : super(key: key);
+  List<AssignmentBean> assignments;
+  ListForDay(this.assignments, {Key? key}) : super(key: key);
 
   @override
-  _ListForDayState createState() => _ListForDayState(day);
+  _ListForDayState createState() => _ListForDayState(assignments);
 }
 
 class _ListForDayState extends State<ListForDay> {
 
-  late final HttpController _httpController;
-  late List<AssignmentBean> _assignments;
-  DateTime day;
-  _ListForDayState(this.day);
+  late List<AssignmentBean> assignments;
 
-  @override
-  void initState() {
-    super.initState();
-
-    _httpController = HttpController.instance;
-    _assignments = _httpController.getAssignmentsByDay(day);
-  }
+  _ListForDayState(this.assignments);
 
   @override
   Widget build(BuildContext context) {
     final DateFormat formatTime = DateFormat('HH:mm');
-    if (_assignments.isEmpty) {
+    if (assignments.isEmpty) {
       return const Center(
           child: Text("Процедур нет",
             style: TextStyle(
@@ -42,15 +30,15 @@ class _ListForDayState extends State<ListForDay> {
       );
     }
     return ListView.builder(
-        itemCount: _assignments.length,
+        itemCount: assignments.length,
         itemBuilder: (_, index) {
           return Card(
             shadowColor: const Color(0xFF75AAA1),
             elevation: 4.0,
             child: ListTile(
-              title: Text(_assignments[index].procedureName),
+              title: Text(assignments[index].procedureName),
               subtitle: Text(
-                  formatTime.format(_assignments[index].begin)),
+                  formatTime.format(assignments[index].begin)),
               trailing: const Icon(Icons.more_vert),
             ),
           );

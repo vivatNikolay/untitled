@@ -43,7 +43,7 @@ class HttpController {
       },
           onError: (e) {
             _state = ResponseState.failed;
-            log('futureRelaxer', error: e);
+            log('fetch relaxer', error: e);
           });
     });
   }
@@ -55,8 +55,23 @@ class HttpController {
         _assignments = value;
       },
           onError: (e) {
-            _state = ResponseState.failed;
-            log('futureAssignment', error: e);
+            _assignments = [];
+            log('fetch assignments', error: e);
+          });
+    });
+  }
+
+  void updateAssignments() async {
+    Relaxer relaxer = _relaxerService.getActive();
+    futureAssignment =
+        _httpService.fetchAssignments(relaxer.sanatorium, relaxer.email);
+    Timer(const Duration(milliseconds: 10), () {
+      futureAssignment.then((value) {
+        _assignments = value;
+      },
+          onError: (e) {
+            _assignments = [];
+            log('update assignments', error: e);
           });
     });
   }
@@ -74,6 +89,10 @@ class HttpController {
     _assignmentService.addAll(_assignments);
   }
 
+  void updateAssignmentsInDB() {
+    _assignmentService.update(_assignments);
+  }
+
   void exitFromAccount() {
     _relaxerService.delete();
     _assignmentService.delete();
@@ -83,12 +102,20 @@ class HttpController {
    return _relaxerService.getActive();
   }
 
-  void addAccount() {
+  void makeInActive() {
     _relaxerService.makeInActive();
     _assignmentService.delete();
   }
 
   List<AssignmentBean> getAssignmentsByDay(DateTime day) {
     return _assignmentService.getAssignmentsByDay(day);
+  }
+
+  List<Relaxer> getRelaxers() {
+    return _relaxerService.getRelaxers();
+  }
+
+  bool hasActive() {
+    return _relaxerService.hasActive();
   }
 }

@@ -31,4 +31,9 @@ class AssignmentService {
   void delete() {
     boxAssignments.clear();
   }
+
+  void update(Iterable<Assignment> assignments) {
+    boxAssignments.clear();
+    boxAssignments.addAll(assignments);
+  }
 }

@@ -4,7 +4,7 @@ import '../models/relaxer.dart';
 
 class RelaxerService {
 
-  final boxRelaxer = Boxes.getRelaxer();
+  final boxRelaxer = Boxes.getRelaxers();
 
   void add(Relaxer relaxer) {
     for (Relaxer el in boxRelaxer.values) {
@@ -19,7 +19,11 @@ class RelaxerService {
   }
 
   void delete() {
-    boxRelaxer.clear();
+    for (Relaxer el in boxRelaxer.values) {
+      if(el.isActive) {
+        el.delete();
+      }
+    }
   }
 
   Relaxer getActive() {
@@ -38,6 +42,15 @@ class RelaxerService {
     );
   }
 
+  bool hasActive() {
+    for (Relaxer el in boxRelaxer.values) {
+      if(el.isActive) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   void makeInActive() {
     for (Relaxer el in boxRelaxer.values) {
       if (el.isActive) {
@@ -45,6 +58,10 @@ class RelaxerService {
         el.save();
       }
     }
+  }
+
+  List<Relaxer> getRelaxers() {
+    return boxRelaxer.values.toList();
   }
 
 }
