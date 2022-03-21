@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/src/pages/login.dart';
 
 import '../controllers/controller.dart';
 import '../models/relaxer.dart';
@@ -6,16 +7,20 @@ import 'home.dart';
 
 class ListRelaxers extends StatefulWidget {
   final String title = 'Аккаунты';
+  bool backToLogin;
 
-  ListRelaxers({Key? key}) : super(key: key);
+  ListRelaxers({Key? key, required this.backToLogin}) : super(key: key);
 
   @override
-  _ListRelaxersState createState() => _ListRelaxersState();
+  _ListRelaxersState createState() => _ListRelaxersState(backToLogin);
 }
 
 class _ListRelaxersState extends State<ListRelaxers> {
   late final HttpController _httpController;
   late List<Relaxer> relaxers;
+  bool backToLogin;
+
+  _ListRelaxersState(this.backToLogin);
 
   @override
   void initState() {
@@ -34,7 +39,11 @@ class _ListRelaxersState extends State<ListRelaxers> {
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => const MyHomePage()));
+                MaterialPageRoute(builder: (context) =>
+                backToLogin == true
+                    ? const LoginScreen()
+                    : const MyHomePage()
+                ));
           },
           icon: const Icon(Icons.arrow_back),
         ),
@@ -71,14 +80,15 @@ class _ListRelaxersState extends State<ListRelaxers> {
                 title:
                     Text("${relaxers[index].name} ${relaxers[index].surname}"),
                 subtitle: Text(relaxers[index].email),
-                onTap: () {
+                onTap: () async {
                   if (relaxers[index].email != _httpController.getActiveRelaxer().email ||
                       relaxers[index].sanatorium != _httpController.getActiveRelaxer().sanatorium) {
                     _httpController.makeInActive();
-                    _httpController.fetchData(
+                    _httpController.fetchAssignments(
                         relaxers[index].sanatorium, relaxers[index].email);
-                    wait();
-                    _httpController.writeToDB();
+                    await Future.delayed(const Duration(seconds: 1));
+                    _httpController.makeActive(relaxers[index]);
+                    _httpController.updateAssignments();
                   }
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => const MyHomePage()));
@@ -86,16 +96,6 @@ class _ListRelaxersState extends State<ListRelaxers> {
               ),
             );
           });
-    }
-  }
-
-  Future<void> wait() async {
-    int chanceCount = 5;
-    for (int i = 0; i < chanceCount; i++) {
-      await Future.delayed(const Duration(seconds: 1));
-      if (!_httpController.isProcessing()) {
-        break;
-      }
     }
   }
 }

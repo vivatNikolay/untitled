@@ -116,7 +116,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     size: 28,
                     color: Colors.white,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                            builder: (context) => ListRelaxers(backToLogin: true)
+                        ));
+                  },
                 ),
               )
           );

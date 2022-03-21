@@ -25,7 +25,6 @@ class AssignmentService {
   }
 
   void addAll(Iterable<Assignment> assignments) {
-    boxAssignments.clear();
     boxAssignments.addAll(assignments);
   }
 

@@ -61,6 +61,10 @@ class HttpController {
     });
   }
 
+  void updateAssignments() {
+    _assignmentService.addAll(_assignments);
+  }
+
   bool isSuccess() {
     return _state == ResponseState.success;
   }
@@ -98,5 +102,9 @@ class HttpController {
 
   bool hasActive() {
     return _relaxerService.hasActive();
+  }
+
+  void makeActive(Relaxer relaxer) {
+    _relaxerService.makeActive(relaxer);
   }
 }
