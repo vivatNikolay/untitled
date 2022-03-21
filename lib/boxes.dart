@@ -6,6 +6,6 @@ class Boxes {
   static Box<Relaxer> getRelaxers() =>
       Hive.box<Relaxer>('relaxer');
 
-  static Box<Assignment> getAssignment() =>
+  static Box<Assignment> getAssignments() =>
       Hive.box<Assignment>('assignment');
 }

@@ -6,7 +6,7 @@ import '../models/date_time_interval.dart';
 
 class AssignmentService {
 
-  final boxAssignments = Boxes.getAssignment();
+  final boxAssignments = Boxes.getAssignments();
 
   List<AssignmentBean> getAssignmentsByDay(DateTime day) {
     List<Assignment> list = boxAssignments.values.toList();
