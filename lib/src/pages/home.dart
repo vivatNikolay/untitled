@@ -29,8 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _today = DateTime.now();
     _tomorrow = DateTime(_today.year, _today.month, _today.day + 1);
     todayAssignments = _httpController.getAssignmentsByDay(_today);
-    tomorrowAssignments =/*
-        ValueNotifier(*/_httpController.getAssignmentsByDay(_tomorrow)/*)*/;
+    tomorrowAssignments = _httpController.getAssignmentsByDay(_tomorrow);
   }
 
   @override
@@ -40,22 +39,17 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
-          actions: <Widget>[/*
+          actions: <Widget>[
             Padding(
                 padding: const EdgeInsets.only(right: 20.0),
-                child: ValueListenableBuilder<List<dynamic>>(
-                    valueListenable: tomorrowAssignments,
-                    builder: (context, value, child) {
-                      return IconButton(
-                        onPressed: () async {
-                          _httpController.updateAssignments();
-                          await Future.delayed(const Duration(seconds: 1));
-                          _httpController.updateAssignmentsInDB();
-                        },
-                        icon: const Icon(Icons.update),
-                      );
-                    }))
-          */],
+                child: IconButton(
+                  onPressed: () async {
+
+                  },
+                  icon: const Icon(Icons.update),
+                )
+            ),
+          ],
           bottom: const TabBar(tabs: [
             Tab(text: 'Сегодня'),
             Tab(text: 'Завтра'),
@@ -64,9 +58,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Center(
             child: TabBarView(children: [
-          ListForDay(todayAssignments),
-          ListForDay(tomorrowAssignments),
-          const TableAssignments()
+              ListForDay(todayAssignments),
+              ListForDay(tomorrowAssignments),
+              const TableAssignments()
         ])),
         drawer: MyDrawer(),
       ),

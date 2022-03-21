@@ -6,19 +6,24 @@ import 'home.dart';
 
 class ListRelaxers extends StatefulWidget {
   final String title = 'Аккаунты';
-  List<Relaxer> relaxers;
 
-  ListRelaxers(this.relaxers, {Key? key}) : super(key: key);
+  ListRelaxers({Key? key}) : super(key: key);
 
   @override
-  _ListRelaxersState createState() => _ListRelaxersState(relaxers);
+  _ListRelaxersState createState() => _ListRelaxersState();
 }
 
 class _ListRelaxersState extends State<ListRelaxers> {
-  final HttpController _httpController = HttpController.instance;
+  late final HttpController _httpController;
   late List<Relaxer> relaxers;
 
-  _ListRelaxersState(this.relaxers);
+  @override
+  void initState() {
+    super.initState();
+
+    _httpController = HttpController.instance;
+    relaxers = _httpController.getRelaxers();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,12 +71,15 @@ class _ListRelaxersState extends State<ListRelaxers> {
                 title:
                     Text("${relaxers[index].name} ${relaxers[index].surname}"),
                 subtitle: Text(relaxers[index].email),
-                onTap: () async {
-                  _httpController.makeInActive();
-                  _httpController.fetchData(
-                      relaxers[index].sanatorium, relaxers[index].email);
-                  wait();
-                  _httpController.writeToDB();
+                onTap: () {
+                  if (relaxers[index].email != _httpController.getActiveRelaxer().email ||
+                      relaxers[index].sanatorium != _httpController.getActiveRelaxer().sanatorium) {
+                    _httpController.makeInActive();
+                    _httpController.fetchData(
+                        relaxers[index].sanatorium, relaxers[index].email);
+                    wait();
+                    _httpController.writeToDB();
+                  }
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => const MyHomePage()));
                 },
@@ -84,10 +92,10 @@ class _ListRelaxersState extends State<ListRelaxers> {
   Future<void> wait() async {
     int chanceCount = 5;
     for (int i = 0; i < chanceCount; i++) {
+      await Future.delayed(const Duration(seconds: 1));
       if (!_httpController.isProcessing()) {
         break;
       }
-      await Future.delayed(const Duration(seconds: 1));
     }
   }
 }

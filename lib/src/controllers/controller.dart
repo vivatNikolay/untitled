@@ -61,21 +61,6 @@ class HttpController {
     });
   }
 
-  void updateAssignments() async {
-    Relaxer relaxer = _relaxerService.getActive();
-    futureAssignment =
-        _httpService.fetchAssignments(relaxer.sanatorium, relaxer.email);
-    Timer(const Duration(milliseconds: 10), () {
-      futureAssignment.then((value) {
-        _assignments = value;
-      },
-          onError: (e) {
-            _assignments = [];
-            log('update assignments', error: e);
-          });
-    });
-  }
-
   bool isSuccess() {
     return _state == ResponseState.success;
   }
@@ -87,10 +72,6 @@ class HttpController {
   void writeToDB() {
     _relaxerService.add(_relaxer);
     _assignmentService.addAll(_assignments);
-  }
-
-  void updateAssignmentsInDB() {
-    _assignmentService.update(_assignments);
   }
 
   void exitFromAccount() {

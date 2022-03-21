@@ -78,7 +78,7 @@ class MyDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                        builder: (context) => ListRelaxers(_httpController.getRelaxers())
+                        builder: (context) => ListRelaxers()
                     ));
               },
             ),

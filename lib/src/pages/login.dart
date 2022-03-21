@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:untitled/src/models/sanatorium.dart';
 import 'package:untitled/src/pages/home.dart';
 import '../controllers/controller.dart';
+import 'list_relaxers.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -51,53 +52,74 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 40,
-              ).copyWith(top: 108),
-              child: Column(
-                children: [
-                  const Text(
-                    'Добро пожаловать',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'PT-Sans',
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+          child: Column(children: [
+            _buildIconButton(context),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40,
+                ).copyWith(top: 30),
+                child: Column(
+                  children: [
+                    const Text(
+                      'Добро пожаловать',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'PT-Sans',
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  _buildTextContainer(
-                      text: 'Санаторий'
-                  ),
-                  _buildDropDownField(
-                    hintText: 'Выберите санаторий',
-                    prefixedIcon: const Icon(Icons.home_work_outlined, color: Colors.white),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  _buildTextContainer(
-                    text: 'Email'
-                  ),
-                  _buildTextField(
-                    hintText: 'Введите email',
-                    prefixedIcon: const Icon(Icons.email_outlined, color: Colors.white),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  _buildLoginButton()
-                ],
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    _buildTextContainer(text: 'Санаторий'),
+                    _buildDropDownField(
+                      hintText: 'Выберите санаторий',
+                      prefixedIcon: const Icon(Icons.home_work_outlined,
+                          color: Colors.white),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    _buildTextContainer(text: 'Email'),
+                    _buildTextField(
+                      hintText: 'Введите email',
+                      prefixedIcon:
+                          const Icon(Icons.email_outlined, color: Colors.white),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    _buildLoginButton()
+                  ],
+                ),
               ),
-            ),
-          ),
+          ]),
+        ),
         ),
       ),
     );
+  }
+
+  Padding _buildIconButton(BuildContext context) {
+    return Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 20,
+              ),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.group,
+                    size: 28,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {},
+                ),
+              )
+          );
   }
 
   Widget _buildTextContainer({
