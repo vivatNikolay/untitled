@@ -19,6 +19,7 @@ class _ListRelaxersState extends State<ListRelaxers> {
   late final HttpController _httpController;
   late List<Relaxer> relaxers;
   bool backToLogin;
+  bool _isTapActive = false;
 
   _ListRelaxersState(this.backToLogin);
 
@@ -28,6 +29,7 @@ class _ListRelaxersState extends State<ListRelaxers> {
 
     _httpController = HttpController.instance;
     relaxers = _httpController.getRelaxers();
+    _isTapActive = true;
   }
 
   @override
@@ -80,7 +82,8 @@ class _ListRelaxersState extends State<ListRelaxers> {
                 title:
                     Text("${relaxers[index].name} ${relaxers[index].surname}"),
                 subtitle: Text(relaxers[index].email),
-                onTap: () async {
+                onTap: _isTapActive ? () async {
+                  setState(() => _isTapActive = false);
                   if (relaxers[index].email != _httpController.getActiveRelaxer().email ||
                       relaxers[index].sanatorium != _httpController.getActiveRelaxer().sanatorium) {
                     _httpController.makeInActive();
@@ -92,7 +95,8 @@ class _ListRelaxersState extends State<ListRelaxers> {
                   }
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => const MyHomePage()));
-                },
+                }
+                : null,
               ),
             );
           });

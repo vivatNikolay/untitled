@@ -102,29 +102,25 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Padding _buildIconButton(BuildContext context) {
-    return Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 20,
-              ),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.group,
-                    size: 28,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                            builder: (context) => ListRelaxers(backToLogin: true)
-                        ));
-                  },
-                ),
-              )
-          );
+  Widget _buildIconButton(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      alignment: Alignment.topRight,
+      child: IconButton(
+        icon: const Icon(
+          Icons.group,
+          size: 28,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => ListRelaxers(backToLogin: true)));
+        },
+      ),
+    );
   }
 
   Widget _buildTextContainer({
