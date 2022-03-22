@@ -28,13 +28,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
     _httpController = HttpController.instance;
     inputController = TextEditingController();
-    inputController.addListener(() {
-      if (inputController.text.isNotEmpty) {
-        setState(() {
-          _isButtonActive = true;
-        });
-      }
-    });
+    inputController.addListener(_controllerListener);
+  }
+
+  void _controllerListener() {
+    if (inputController.text.isNotEmpty) {
+      setState(() {
+        _isButtonActive = true;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    inputController.removeListener(_controllerListener);
+    super.dispose();
   }
 
   @override
