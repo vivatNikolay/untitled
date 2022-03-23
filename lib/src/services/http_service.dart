@@ -26,7 +26,7 @@ class HttpService {
       return (jsonDecode(res.body) as List).map((i) =>
           Assignment.fromJson(i)).toList();
     } else {
-      throw "Unable to retrieve assignments.";
+      return [];
     }
   }
 

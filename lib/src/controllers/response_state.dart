@@ -2,5 +2,6 @@
 enum ResponseState {
   success,
   failed,
-  processing
+  processing,
+  no_connection
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 import 'package:untitled/src/controllers/response_state.dart';
 import 'package:untitled/src/models/assignment.dart';
 import 'package:untitled/src/services/assignment_service.dart';
@@ -42,8 +43,12 @@ class HttpController {
         _relaxer = value;
       },
           onError: (e) {
-            _state = ResponseState.failed;
-            log('fetch relaxer', error: e);
+            if (e is SocketException) {
+              _state = ResponseState.no_connection;
+            } else {
+              _state = ResponseState.failed;
+              log('fetch relaxer', error: e);
+            }
           });
     });
   }
@@ -55,8 +60,11 @@ class HttpController {
         _assignments = value;
       },
           onError: (e) {
-            _assignments = [];
-            log('fetch assignments', error: e);
+            if (e is SocketException) {
+              _state = ResponseState.no_connection;
+            } else {
+              log('fetch assignments', error: e);
+            }
           });
     });
   }
@@ -65,12 +73,8 @@ class HttpController {
     _assignmentService.addAll(_assignments);
   }
 
-  bool isSuccess() {
-    return _state == ResponseState.success;
-  }
-
-  bool isProcessing() {
-    return _state == ResponseState.processing;
+  ResponseState getState() {
+    return _state;
   }
 
   void writeToDB() {

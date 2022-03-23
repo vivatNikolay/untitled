@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:untitled/src/controllers/response_state.dart';
 import 'package:untitled/src/models/sanatorium.dart';
 import 'package:untitled/src/pages/home.dart';
 import '../controllers/controller.dart';
@@ -282,10 +283,13 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _checkLogin() async {
     _httpController.fetchData(_sanatoriumName, inputController.text.trim());
     await wait();
-    if (_httpController.isSuccess()) {
+    if (_httpController.getState() == ResponseState.success) {
       _httpController.writeToDB();
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const MyHomePage()));
+    } else if (_httpController.getState() == ResponseState.no_connection) {
+      Fluttertoast.showToast(
+          msg: "Проверьте интернет соединение");
     } else {
       Fluttertoast.showToast(
           msg: "Отдыхающий не найден",
@@ -301,7 +305,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> wait() async {
     int chanceCount = 5;
     for (int i = 0; i < chanceCount; i++) {
-      if (!_httpController.isProcessing()) {
+      if (_httpController.getState() != ResponseState.processing) {
         break;
       }
       await Future.delayed(const Duration(seconds: 1));
