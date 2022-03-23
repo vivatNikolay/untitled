@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/src/pages/drawer.dart';
 import 'package:untitled/src/pages/tabs/list_for_day.dart';
-import '../controllers/controller.dart';
-import '../models/assignment_bean.dart';
 import 'tabs/calendar.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -15,21 +13,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late final HttpController _httpController;
-  late List<AssignmentBean> todayAssignments;
-  late final tomorrowAssignments;
   late DateTime _today;
   late DateTime _tomorrow;
+  late ValueNotifier<bool> buttonClicked;
 
   @override
   void initState() {
     super.initState();
 
-    _httpController = HttpController.instance;
     _today = DateTime.now();
     _tomorrow = DateTime(_today.year, _today.month, _today.day + 1);
-    todayAssignments = _httpController.getAssignmentsByDay(_today);
-    tomorrowAssignments = _httpController.getAssignmentsByDay(_tomorrow);
+    buttonClicked = ValueNotifier(false);
   }
 
   @override
@@ -43,8 +37,12 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
                 padding: const EdgeInsets.only(right: 20.0),
                 child: IconButton(
-                  onPressed: () async {
-
+                  onPressed: () {
+                    if(buttonClicked.value) {
+                      buttonClicked.value = false;
+                  } else {
+                      buttonClicked.value = true;
+                    }
                   },
                   icon: const Icon(Icons.update),
                 )
@@ -58,9 +56,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Center(
             child: TabBarView(children: [
-              ListForDay(todayAssignments),
-              ListForDay(tomorrowAssignments),
-              const TableAssignments()
+              ListForDay(_today, buttonClicked),
+              ListForDay(_tomorrow, buttonClicked),
+              TableAssignments(buttonClicked)
         ])),
         drawer: MyDrawer(),
       ),

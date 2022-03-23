@@ -1,20 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:untitled/src/models/relaxer.dart';
+import '../../controllers/controller.dart';
 import '../../models/assignment_bean.dart';
 
 class ListForDay extends StatefulWidget {
-  List<AssignmentBean> assignments;
-  ListForDay(this.assignments, {Key? key}) : super(key: key);
+  DateTime day;
+  ValueNotifier<bool> buttonClicked;
+  ListForDay(this.day, this.buttonClicked, {Key? key}) : super(key: key);
 
   @override
-  _ListForDayState createState() => _ListForDayState(assignments);
+  _ListForDayState createState() => _ListForDayState(day, buttonClicked);
 }
 
 class _ListForDayState extends State<ListForDay> {
-
+  late final HttpController _httpController;
   late List<AssignmentBean> assignments;
+  DateTime day;
+  ValueNotifier<bool> buttonClicked;
+  late Relaxer relaxer;
 
-  _ListForDayState(this.assignments);
+  _ListForDayState(this.day, this.buttonClicked);
+
+  @override
+  void initState() {
+    super.initState();
+
+    _httpController = HttpController.instance;
+    assignments = _httpController.getAssignmentsByDay(day);
+    relaxer = _httpController.getActiveRelaxer();
+    buttonClicked.addListener(_updateListener);
+  }
+
+  Future<void> _updateListener() async {
+    _httpController.deleteAssignments();
+    _httpController.fetchAssignments(relaxer.sanatorium, relaxer.email);
+    await Future.delayed(const Duration(seconds: 1));
+    _httpController.updateAssignments();
+    setState(() {
+      assignments = _httpController.getAssignmentsByDay(day);
+    });
+  }
+
+  @override
+  void dispose() {
+    buttonClicked.removeListener(_updateListener);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

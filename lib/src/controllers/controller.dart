@@ -107,4 +107,8 @@ class HttpController {
   void makeActive(Relaxer relaxer) {
     _relaxerService.makeActive(relaxer);
   }
+
+  void deleteAssignments() {
+    _assignmentService.delete();
+  }
 }
