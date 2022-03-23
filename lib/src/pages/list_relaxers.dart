@@ -84,8 +84,7 @@ class _ListRelaxersState extends State<ListRelaxers> {
                 subtitle: Text(relaxers[index].email),
                 onTap: _isTapActive ? () async {
                   setState(() => _isTapActive = false);
-                  if (relaxers[index].email != _httpController.getActiveRelaxer().email ||
-                      relaxers[index].sanatorium != _httpController.getActiveRelaxer().sanatorium) {
+                  if (relaxers[index] != _httpController.getActiveRelaxer()) {
                     _httpController.makeInActive();
                     _httpController.fetchAssignments(
                         relaxers[index].sanatorium, relaxers[index].email);

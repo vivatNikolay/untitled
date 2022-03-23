@@ -8,8 +8,7 @@ class RelaxerService {
 
   void add(Relaxer relaxer) {
     for (Relaxer el in boxRelaxer.values) {
-      if (el.email == relaxer.email &&
-          el.sanatorium == relaxer.sanatorium) {
+      if (el == relaxer) {
         el.isActive = true;
         el.save();
         return;
@@ -63,8 +62,7 @@ class RelaxerService {
 
   void makeActive(Relaxer relaxer) {
     for (Relaxer el in boxRelaxer.values) {
-      if (el.email == relaxer.email &&
-          el.sanatorium == relaxer.sanatorium) {
+      if (el == relaxer) {
         el.isActive = true;
         el.save();
       }

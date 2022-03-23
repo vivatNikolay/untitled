@@ -36,4 +36,11 @@ class Relaxer extends HiveObject{
     sanatorium: "",
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      other is Relaxer &&
+              email == other.email &&
+              sanatorium == other.sanatorium;
+
 }
