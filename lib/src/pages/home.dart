@@ -19,9 +19,8 @@ class _MyHomePageState extends State<MyHomePage> {
   late DateTime _today;
   late DateTime _tomorrow;
   late final HttpController _httpController;
-  late var todayAssignments;
-  late var tomorrowAssignments;
-  late List<AssignmentBean> assignments;
+  late ValueNotifier<List<AssignmentBean>> todayAssignments;
+  late ValueNotifier<List<AssignmentBean>> tomorrowAssignments;
   late Relaxer relaxer;
 
   @override
@@ -34,6 +33,12 @@ class _MyHomePageState extends State<MyHomePage> {
     relaxer = _httpController.getActiveRelaxer();
     todayAssignments = ValueNotifier(_httpController.getAssignmentsByDay(_today));
     tomorrowAssignments = ValueNotifier(_httpController.getAssignmentsByDay(_tomorrow));
+  }
+
+  @override
+  void dispose() {
+    todayAssignments.dispose();
+    super.dispose();
   }
 
   @override
