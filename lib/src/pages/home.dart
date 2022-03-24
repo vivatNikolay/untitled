@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/src/models/assignment_bean.dart';
 import 'package:untitled/src/pages/drawer.dart';
 import 'package:untitled/src/pages/tabs/list_for_day.dart';
+import '../controllers/controller.dart';
+import '../models/relaxer.dart';
 import 'tabs/calendar.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -15,7 +18,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   late DateTime _today;
   late DateTime _tomorrow;
-  late ValueNotifier<bool> buttonClicked;
+  late final HttpController _httpController;
+  late var todayAssignments;
+  late var tomorrowAssignments;
+  late List<AssignmentBean> assignments;
+  late Relaxer relaxer;
 
   @override
   void initState() {
@@ -23,7 +30,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     _today = DateTime.now();
     _tomorrow = DateTime(_today.year, _today.month, _today.day + 1);
-    buttonClicked = ValueNotifier(false);
+    _httpController = HttpController.instance;
+    relaxer = _httpController.getActiveRelaxer();
+    todayAssignments = ValueNotifier(_httpController.getAssignmentsByDay(_today));
+    tomorrowAssignments = ValueNotifier(_httpController.getAssignmentsByDay(_tomorrow));
   }
 
   @override
@@ -37,12 +47,13 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
                 padding: const EdgeInsets.only(right: 20.0),
                 child: IconButton(
-                  onPressed: () {
-                    if(buttonClicked.value) {
-                      buttonClicked.value = false;
-                  } else {
-                      buttonClicked.value = true;
-                    }
+                  onPressed: () async {
+                    _httpController.deleteAssignments();
+                    _httpController.fetchAssignments(relaxer.sanatorium, relaxer.email);
+                    await Future.delayed(const Duration(seconds: 1));
+                    _httpController.updateAssignments();
+                    todayAssignments.value = _httpController.getAssignmentsByDay(_today);
+                    tomorrowAssignments.value = _httpController.getAssignmentsByDay(_tomorrow);
                   },
                   icon: const Icon(Icons.update),
                 )
@@ -56,9 +67,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Center(
             child: TabBarView(children: [
-              ListForDay(_today, buttonClicked),
-              ListForDay(_tomorrow, buttonClicked),
-              TableAssignments(buttonClicked)
+              ListForDay(todayAssignments),
+              ListForDay(tomorrowAssignments),
+              TableAssignments()
         ])),
         drawer: MyDrawer(),
       ),

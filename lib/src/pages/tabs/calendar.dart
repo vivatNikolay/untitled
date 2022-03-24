@@ -3,15 +3,13 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:untitled/src/controllers/controller.dart';
 import 'package:untitled/src/models/assignment_bean.dart';
-
 import '../../models/relaxer.dart';
 
 class TableAssignments extends StatefulWidget {
-  ValueNotifier<bool> buttonClicked;
-  TableAssignments(this.buttonClicked, {Key? key}) : super(key: key);
+  TableAssignments({Key? key}) : super(key: key);
 
   @override
-  _TableAssignmentsState createState() => _TableAssignmentsState(buttonClicked);
+  _TableAssignmentsState createState() => _TableAssignmentsState();
 }
 
 class _TableAssignmentsState extends State<TableAssignments> {
@@ -25,9 +23,8 @@ class _TableAssignmentsState extends State<TableAssignments> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   late Relaxer relaxer;
-  ValueNotifier<bool> buttonClicked;
 
-  _TableAssignmentsState(this.buttonClicked);
+  _TableAssignmentsState();
 
   @override
   void initState() {
@@ -38,23 +35,11 @@ class _TableAssignmentsState extends State<TableAssignments> {
     _selectedAssignmentBeans = ValueNotifier(_getAssignmentsForDay(_selectedDay!));
     _rangeSelectionMode = RangeSelectionMode.toggledOff;
     relaxer = _httpController.getActiveRelaxer();
-    buttonClicked.addListener(_updateListener);
-  }
-
-  Future<void> _updateListener() async {
-    _httpController.deleteAssignments();
-    _httpController.fetchAssignments(relaxer.sanatorium, relaxer.email);
-    await Future.delayed(const Duration(seconds: 1));
-    _httpController.updateAssignments();
-    setState(() {
-      _selectedAssignmentBeans.value = _getAssignmentsForDay(_selectedDay!);
-    });
   }
 
   @override
   void dispose() {
     _selectedAssignmentBeans.dispose();
-    buttonClicked.removeListener(_updateListener);
     super.dispose();
   }
 

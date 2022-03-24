@@ -288,14 +288,9 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const MyHomePage()));
     } else if (_httpController.getState() == ResponseState.no_connection) {
-      Fluttertoast.showToast(
-          msg: "Проверьте интернет соединение");
+      Fluttertoast.showToast(msg: "Проверьте интернет соединение");
     } else {
-      Fluttertoast.showToast(
-          msg: "Отдыхающий не найден",
-          backgroundColor: Colors.redAccent,
-          textColor: Colors.white,
-          fontSize: 17.0);
+      Fluttertoast.showToast(msg: "Отдыхающий не найден");
     }
     setState(() {
       _isButtonActive = true;
