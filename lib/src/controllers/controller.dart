@@ -21,7 +21,7 @@ class HttpController {
   late Future<Relaxer> futureRelaxer;
   late Future<List<Assignment>> futureAssignment;
 
-  late ResponseState _state;
+  ResponseState _state= ResponseState.processing;
 
   HttpController._privateConstructor();
   static final HttpController _instance = HttpController._privateConstructor();
@@ -96,10 +96,6 @@ class HttpController {
     _assignmentService.delete();
   }
 
-  List<AssignmentBean> getAssignmentsByDay(DateTime day) {
-    return _assignmentService.getAssignmentsByDay(day);
-  }
-
   List<Relaxer> getRelaxers() {
     return _relaxerService.getRelaxers();
   }
@@ -114,5 +110,9 @@ class HttpController {
 
   void deleteAssignments() {
     _assignmentService.delete();
+  }
+
+  List<Assignment> getAssignments() {
+    return _assignmentService.getAssignments();
   }
 }

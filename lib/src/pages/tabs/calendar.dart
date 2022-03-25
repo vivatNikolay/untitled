@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:untitled/src/controllers/controller.dart';
 import 'package:untitled/src/models/assignment_bean.dart';
-import '../../models/relaxer.dart';
+import 'package:untitled/src/pages/tabs/tab_helper.dart';
+import '../../models/assignment.dart';
 
 class TableAssignments extends StatefulWidget {
-  TableAssignments({Key? key}) : super(key: key);
+  var assignments;
+  TableAssignments(this.assignments, {Key? key}) : super(key: key);
 
   @override
-  _TableAssignmentsState createState() => _TableAssignmentsState();
+  _TableAssignmentsState createState() => _TableAssignmentsState(assignments);
 }
 
 class _TableAssignmentsState extends State<TableAssignments> {
 
-  late final HttpController _httpController;
   final _kFirstDay = DateTime(DateTime.now().year, DateTime.now().month - 3, DateTime.now().day);
   final _kLastDay = DateTime(DateTime.now().year, DateTime.now().month + 3, DateTime.now().day);
   late final ValueNotifier<List<AssignmentBean>> _selectedAssignmentBeans;
@@ -22,29 +22,34 @@ class _TableAssignmentsState extends State<TableAssignments> {
   late final RangeSelectionMode _rangeSelectionMode;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  late Relaxer relaxer;
+  late ValueNotifier<List<Assignment>> assignments;
+  late TabHelper tabHelper;
 
-  _TableAssignmentsState();
+  _TableAssignmentsState(this.assignments);
 
   @override
   void initState() {
     super.initState();
 
-    _httpController = HttpController.instance;
+    tabHelper = TabHelper();
     _selectedDay = _focusedDay;
     _selectedAssignmentBeans = ValueNotifier(_getAssignmentsForDay(_selectedDay!));
     _rangeSelectionMode = RangeSelectionMode.toggledOff;
-    relaxer = _httpController.getActiveRelaxer();
+    assignments.addListener(_updateAssignments);
+  }
+  void _updateAssignments() {
+    _selectedAssignmentBeans.value = _getAssignmentsForDay(_selectedDay!);
   }
 
   @override
   void dispose() {
+    assignments.removeListener(_updateAssignments);
     _selectedAssignmentBeans.dispose();
     super.dispose();
   }
 
   List<AssignmentBean> _getAssignmentsForDay(DateTime day) {
-    return _httpController.getAssignmentsByDay(day);
+    return tabHelper.getAssignmentBeansByDay(day, assignments.value);
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {

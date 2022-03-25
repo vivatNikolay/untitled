@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:untitled/src/models/assignment_bean.dart';
 import 'package:untitled/src/pages/drawer.dart';
 import 'package:untitled/src/pages/tabs/list_for_day.dart';
+import 'package:untitled/src/pages/tabs/tab_helper.dart';
 import '../controllers/controller.dart';
+import '../models/assignment.dart';
 import '../models/relaxer.dart';
 import 'tabs/calendar.dart';
 
@@ -16,28 +18,36 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late final HttpController _httpController;
   late DateTime _today;
   late DateTime _tomorrow;
-  late final HttpController _httpController;
+  late Relaxer relaxer;
+  late TabHelper tabHelper;
   late ValueNotifier<List<AssignmentBean>> todayAssignments;
   late ValueNotifier<List<AssignmentBean>> tomorrowAssignments;
-  late Relaxer relaxer;
+  late ValueNotifier<List<Assignment>> assignments;
+  late bool _isButtonActive;
 
   @override
   void initState() {
     super.initState();
 
+    _httpController = HttpController.instance;
     _today = DateTime.now();
     _tomorrow = DateTime(_today.year, _today.month, _today.day + 1);
-    _httpController = HttpController.instance;
     relaxer = _httpController.getActiveRelaxer();
-    todayAssignments = ValueNotifier(_httpController.getAssignmentsByDay(_today));
-    tomorrowAssignments = ValueNotifier(_httpController.getAssignmentsByDay(_tomorrow));
+    tabHelper = TabHelper();
+    assignments = ValueNotifier(_httpController.getAssignments());
+    todayAssignments = ValueNotifier(tabHelper.getAssignmentBeansByDay(_today, assignments.value));
+    tomorrowAssignments = ValueNotifier(tabHelper.getAssignmentBeansByDay(_tomorrow, assignments.value));
+    _isButtonActive = true;
   }
 
   @override
   void dispose() {
     todayAssignments.dispose();
+    tomorrowAssignments.dispose();
+    assignments.dispose();
     super.dispose();
   }
 
@@ -52,14 +62,22 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
                 padding: const EdgeInsets.only(right: 20.0),
                 child: IconButton(
-                  onPressed: () async {
+                  onPressed: _isButtonActive ? () async {
+                    setState(() {
+                      _isButtonActive = false;
+                    });
                     _httpController.deleteAssignments();
                     _httpController.fetchAssignments(relaxer.sanatorium, relaxer.email);
                     await Future.delayed(const Duration(seconds: 1));
                     _httpController.updateAssignments();
-                    todayAssignments.value = _httpController.getAssignmentsByDay(_today);
-                    tomorrowAssignments.value = _httpController.getAssignmentsByDay(_tomorrow);
-                  },
+                    assignments.value = _httpController.getAssignments();
+                    todayAssignments.value = tabHelper.getAssignmentBeansByDay(_today, assignments.value);
+                    tomorrowAssignments.value = tabHelper.getAssignmentBeansByDay(_tomorrow, assignments.value);
+                    setState(() {
+                      _isButtonActive = true;
+                    });
+                  }
+                  : null,
                   icon: const Icon(Icons.update),
                 )
             ),
@@ -74,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: TabBarView(children: [
               ListForDay(todayAssignments),
               ListForDay(tomorrowAssignments),
-              TableAssignments()
+              TableAssignments(assignments)
         ])),
         drawer: MyDrawer(),
       ),
