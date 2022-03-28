@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/src/pages/list_relaxers.dart';
-import 'package:untitled/src/pages/login.dart';
+import 'package:untitled/src/pages/login/login.dart';
 import '../controllers/controller.dart';
 import '../models/relaxer.dart';
 

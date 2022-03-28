@@ -5,7 +5,7 @@ import 'package:untitled/src/controllers/controller.dart';
 import 'package:untitled/src/models/assignment.dart';
 import 'package:untitled/src/models/date_time_interval.dart';
 import 'package:untitled/src/models/relaxer.dart';
-import 'package:untitled/src/pages/login.dart';
+import 'package:untitled/src/pages/login/login.dart';
 import 'package:untitled/src/pages/home.dart';
 
 void main() async {

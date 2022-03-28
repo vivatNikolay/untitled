@@ -4,8 +4,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:untitled/src/controllers/response_state.dart';
 import 'package:untitled/src/models/sanatorium.dart';
 import 'package:untitled/src/pages/home.dart';
-import '../controllers/controller.dart';
-import 'list_relaxers.dart';
+import 'package:untitled/src/pages/login/validation_state.dart';
+import '../../controllers/controller.dart';
+import '../list_relaxers.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -19,9 +20,13 @@ class _LoginScreenState extends State<LoginScreen> {
   late final HttpController _httpController;
   late TextEditingController inputController;
   var _sanatoriumName;
-  bool _textFieldEmpty = false;
+  ValidationState _textFieldValidation = ValidationState.valid;
   bool _dropDownFieldEmpty = false;
   bool _isButtonActive = true;
+  final RegExp regExpEmail = RegExp(
+      r"^[\w.%+-]+@[A-z0-9.-]+\.[A-z]{2,}$",
+      multiLine: false
+  );
 
   @override
   void initState() {
@@ -218,7 +223,7 @@ class _LoginScreenState extends State<LoginScreen> {
         cursorWidth: 2,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
-          border: _textFieldEmpty ?
+          border: _textFieldValidation != ValidationState.valid ?
             const UnderlineInputBorder(
               borderSide: BorderSide(color: Color(0xFFBA1818), width: 1),
             )
@@ -232,7 +237,7 @@ class _LoginScreenState extends State<LoginScreen> {
             fontWeight: FontWeight.bold,
             fontFamily: 'PTSans',
           ),
-          errorText: _textFieldEmpty ? 'Это поле не может быть пустым' : null,
+          errorText: validationMessage(_textFieldValidation),
           errorStyle: const TextStyle(
             fontWeight: FontWeight.bold,
             color: Color(0xFFBA1818),
@@ -267,11 +272,11 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         onPressed: _isButtonActive ? () async {
           setState(() {
-            inputController.text.trim().isEmpty ? _textFieldEmpty = true : _textFieldEmpty = false;
+            validateEmail();
             _sanatoriumName == null ? _dropDownFieldEmpty = true : _dropDownFieldEmpty = false;
             _isButtonActive = false;
           });
-          if (_sanatoriumName != null && inputController.text.isNotEmpty) {
+          if (_sanatoriumName != null && _textFieldValidation == ValidationState.valid) {
             _checkLogin();
           }
         }
@@ -305,5 +310,27 @@ class _LoginScreenState extends State<LoginScreen> {
       }
       await Future.delayed(const Duration(seconds: 1));
     }
+  }
+
+  void validateEmail() {
+    if(inputController.text.trim().isEmpty) {
+      _textFieldValidation = ValidationState.empty;
+      return;
+    }
+    if (regExpEmail.hasMatch(inputController.text.trim())) {
+      _textFieldValidation = ValidationState.valid;
+    } else {
+      _textFieldValidation = ValidationState.invalid;
+    }
+  }
+
+  String? validationMessage(ValidationState textFieldEmpty) {
+    if (textFieldEmpty == ValidationState.empty) {
+      return 'Это поле не может быть пустым';
+    }
+    if (textFieldEmpty == ValidationState.invalid) {
+      return 'Неверный email';
+    }
+    return null;
   }
 }
