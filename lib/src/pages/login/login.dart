@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   ValidationState _textFieldValidation = ValidationState.valid;
   bool _dropDownFieldEmpty = false;
   bool _isButtonActive = true;
-  final RegExp regExpEmail = RegExp(
+  final RegExp _regExpEmail = RegExp(
       r"^[\w.%+-]+@[A-z0-9.-]+\.[A-z]{2,}$",
       multiLine: false
   );
@@ -317,7 +317,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _textFieldValidation = ValidationState.empty;
       return;
     }
-    if (regExpEmail.hasMatch(inputController.text.trim())) {
+    if (_regExpEmail.hasMatch(inputController.text.trim())) {
       _textFieldValidation = ValidationState.valid;
     } else {
       _textFieldValidation = ValidationState.invalid;
