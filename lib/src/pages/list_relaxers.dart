@@ -85,11 +85,7 @@ class _ListRelaxersState extends State<ListRelaxers> {
                 subtitle: Text(relaxers[index].email),
                 onTap: _isTapActive ? () async {
                   setState(() => _isTapActive = false);
-                  if (relaxers[index] != _httpController.getActiveRelaxer()) {
-                    await selectAction(index);
-                  }
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const MyHomePage()));
+                  await selectAction(index);
                 }
                 : null,
               ),
@@ -99,18 +95,26 @@ class _ListRelaxersState extends State<ListRelaxers> {
   }
 
   Future<void> selectAction(int index) async {
-    _httpController.fetchAssignments(
-        relaxers[index].sanatorium, relaxers[index].email);
-    await wait();
+    if (relaxers[index] != _httpController.getActiveRelaxer()) {
+      _httpController.fetchAssignments(
+          relaxers[index].sanatorium, relaxers[index].email);
+      await wait();
 
-    if (_httpController.getStateUpdate() == ResponseState.success) {
-      _httpController.makeInActive();
-      _httpController.makeActive(relaxers[index]);
-      _httpController.updateAssignments();
-    } else if (_httpController.getStateUpdate() == ResponseState.no_connection) {
-      Fluttertoast.showToast(msg: "Проверьте интернет соединение");
+      if (_httpController.getStateUpdate() == ResponseState.success) {
+        _httpController.makeInActive();
+        _httpController.makeActive(relaxers[index]);
+        _httpController.updateAssignments();
+
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => const MyHomePage()));
+      } else if (_httpController.getStateUpdate() == ResponseState.no_connection) {
+        Fluttertoast.showToast(msg: "Проверьте интернет соединение");
+      } else {
+        Fluttertoast.showToast(msg: "Ошибка");
+      }
     } else {
-      Fluttertoast.showToast(msg: "Ошибка");
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const MyHomePage()));
     }
   }
 
