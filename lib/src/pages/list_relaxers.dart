@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:untitled/src/pages/login/login.dart';
-
 import '../controllers/controller.dart';
+import '../controllers/response_state.dart';
 import '../models/relaxer.dart';
 import 'home.dart';
 
@@ -85,12 +86,7 @@ class _ListRelaxersState extends State<ListRelaxers> {
                 onTap: _isTapActive ? () async {
                   setState(() => _isTapActive = false);
                   if (relaxers[index] != _httpController.getActiveRelaxer()) {
-                    _httpController.makeInActive();
-                    _httpController.fetchAssignments(
-                        relaxers[index].sanatorium, relaxers[index].email);
-                    await Future.delayed(const Duration(seconds: 1));
-                    _httpController.makeActive(relaxers[index]);
-                    _httpController.updateAssignments();
+                    await selectAction(index);
                   }
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => const MyHomePage()));
@@ -99,6 +95,32 @@ class _ListRelaxersState extends State<ListRelaxers> {
               ),
             );
           });
+    }
+  }
+
+  Future<void> selectAction(int index) async {
+    _httpController.fetchAssignments(
+        relaxers[index].sanatorium, relaxers[index].email);
+    await wait();
+
+    if (_httpController.getStateUpdate() == ResponseState.success) {
+      _httpController.makeInActive();
+      _httpController.makeActive(relaxers[index]);
+      _httpController.updateAssignments();
+    } else if (_httpController.getStateUpdate() == ResponseState.no_connection) {
+      Fluttertoast.showToast(msg: "Проверьте интернет соединение");
+    } else {
+      Fluttertoast.showToast(msg: "Ошибка");
+    }
+  }
+
+  Future<void> wait() async {
+    int chanceCount = 5;
+    for (int i = 0; i < chanceCount; i++) {
+      if (_httpController.getStateUpdate() != ResponseState.processing) {
+        break;
+      }
+      await Future.delayed(const Duration(seconds: 1));
     }
   }
 }

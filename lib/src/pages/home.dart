@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:untitled/src/models/assignment_bean.dart';
 import 'package:untitled/src/pages/drawer.dart';
 import 'package:untitled/src/pages/tabs/list_for_day.dart';
 import 'package:untitled/src/pages/tabs/tab_helper.dart';
 import '../controllers/controller.dart';
+import '../controllers/response_state.dart';
 import '../models/assignment.dart';
 import '../models/relaxer.dart';
 import 'tabs/calendar.dart';
@@ -66,13 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     setState(() {
                       _isButtonActive = false;
                     });
-                    _httpController.deleteAssignments();
-                    _httpController.fetchAssignments(relaxer.sanatorium, relaxer.email);
-                    await Future.delayed(const Duration(seconds: 1));
-                    _httpController.updateAssignments();
-                    assignments.value = _httpController.getAssignments();
-                    todayAssignments.value = tabHelper.getAssignmentBeansByDay(_today, assignments.value);
-                    tomorrowAssignments.value = tabHelper.getAssignmentBeansByDay(_tomorrow, assignments.value);
+                    await updateAction();
                     setState(() {
                       _isButtonActive = true;
                     });
@@ -97,5 +93,35 @@ class _MyHomePageState extends State<MyHomePage> {
         drawer: MyDrawer(),
       ),
     );
+  }
+
+  Future<void> updateAction() async {
+    _httpController.fetchAssignments(relaxer.sanatorium, relaxer.email);
+    await wait();
+
+    if (_httpController.getStateUpdate() == ResponseState.success) {
+      _httpController.updateAssignments();
+      assignments.value = _httpController.getAssignments();
+      todayAssignments.value =
+          tabHelper.getAssignmentBeansByDay(
+              _today, assignments.value);
+      tomorrowAssignments.value =
+          tabHelper.getAssignmentBeansByDay(
+              _tomorrow, assignments.value);
+    } else if (_httpController.getStateUpdate() == ResponseState.no_connection) {
+      Fluttertoast.showToast(msg: "Проверьте интернет соединение");
+    } else {
+      Fluttertoast.showToast(msg: "Ошибка");
+    }
+  }
+
+  Future<void> wait() async {
+    int chanceCount = 5;
+    for (int i = 0; i < chanceCount; i++) {
+      if (_httpController.getStateUpdate() != ResponseState.processing) {
+        break;
+      }
+      await Future.delayed(const Duration(seconds: 1));
+    }
   }
 }

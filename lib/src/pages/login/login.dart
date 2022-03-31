@@ -288,11 +288,11 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _checkLogin() async {
     _httpController.fetchData(_sanatoriumName, inputController.text.trim());
     await wait();
-    if (_httpController.getState() == ResponseState.success) {
+    if (_httpController.getStateLogin() == ResponseState.success) {
       _httpController.writeToDB();
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const MyHomePage()));
-    } else if (_httpController.getState() == ResponseState.no_connection) {
+    } else if (_httpController.getStateLogin() == ResponseState.no_connection) {
       Fluttertoast.showToast(msg: "Проверьте интернет соединение");
     } else {
       Fluttertoast.showToast(msg: "Отдыхающий не найден");
@@ -305,7 +305,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> wait() async {
     int chanceCount = 5;
     for (int i = 0; i < chanceCount; i++) {
-      if (_httpController.getState() != ResponseState.processing) {
+      if (_httpController.getStateLogin() != ResponseState.processing) {
         break;
       }
       await Future.delayed(const Duration(seconds: 1));

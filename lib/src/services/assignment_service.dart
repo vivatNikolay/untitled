@@ -10,7 +10,7 @@ class AssignmentService {
   }
 
   void delete() {
-    boxAssignments.clear();
+    boxAssignments.deleteAll(boxAssignments.keys);
   }
 
   List<Assignment> getAssignments() {
