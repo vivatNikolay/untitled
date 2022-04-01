@@ -68,6 +68,7 @@ class MyDrawer extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => const LoginScreen()
                     ));
+                _httpController.deleteAssignments();
                 _httpController.makeInActive();
               },
             ),

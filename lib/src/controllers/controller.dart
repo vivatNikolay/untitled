@@ -118,4 +118,8 @@ class HttpController {
   List<Assignment> getAssignments() {
     return _assignmentService.getAssignments();
   }
+
+  void deleteAssignments() {
+    _assignmentService.delete();
+  }
 }

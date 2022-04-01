@@ -116,6 +116,7 @@ class _ListRelaxersState extends State<ListRelaxers> {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => const MyHomePage()));
     }
+    setState(() => _isTapActive = true);
   }
 
   Future<void> wait() async {
