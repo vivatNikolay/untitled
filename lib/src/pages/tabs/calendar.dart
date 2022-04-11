@@ -102,7 +102,7 @@ class _TableAssignmentsState extends State<TableAssignments> {
               _focusedDay = focusedDay;
             },
           ),
-          const SizedBox(height: 8.0),
+          const SizedBox(height: 4.0),
           Expanded(
             child: ValueListenableBuilder<List<AssignmentBean>>(
               valueListenable: _selectedAssignmentBeans,
@@ -113,17 +113,28 @@ class _TableAssignmentsState extends State<TableAssignments> {
                     final DateFormat formatTime = DateFormat('HH:mm');
                     return Container(
                       margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
+                        horizontal: 10.0,
                       ),
+                      padding: const EdgeInsets.only(top: 0.5),
                       decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(12.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF476A68).withOpacity(0.4),
+                            blurRadius: 8.0,
+                            offset: const Offset(1, 6),
+                          )
+                        ],
                       ),
-                      child: ListTile(
-                        onTap: () => print('${value[index]}'),
-                        title: Text('${value[index].procedureName} '
-                            '${formatTime.format(value[index].begin)}'),
+                      child: Card(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(13.0),
+                        ),
+                        child: ListTile(
+                          onTap: () => print('${value[index]}'),
+                          title: Text('${value[index].procedureName} '
+                              '${formatTime.format(value[index].begin)}'),
+                        ),
                       ),
                     );
                   },
