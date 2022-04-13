@@ -77,9 +77,9 @@ class MyDrawer extends StatelessWidget {
               minLeadingWidth: 24,
               title: const Text('Сменить аккаунт'),
               onTap: () {
-                Navigator.of(context).pushReplacement(
+                Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (context) => ListRelaxers(backToLogin: false)
+                        builder: (context) => const ListRelaxers()
                     ));
               },
             ),

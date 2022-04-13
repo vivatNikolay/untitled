@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:untitled/src/pages/login/login.dart';
 import '../controllers/controller.dart';
 import '../controllers/response_state.dart';
 import '../models/relaxer.dart';
@@ -8,21 +7,17 @@ import 'home.dart';
 
 class ListRelaxers extends StatefulWidget {
   final String title = 'Аккаунты';
-  bool backToLogin;
 
-  ListRelaxers({Key? key, required this.backToLogin}) : super(key: key);
+  const ListRelaxers({Key? key}) : super(key: key);
 
   @override
-  _ListRelaxersState createState() => _ListRelaxersState(backToLogin);
+  _ListRelaxersState createState() => _ListRelaxersState();
 }
 
 class _ListRelaxersState extends State<ListRelaxers> {
   late final HttpController _httpController;
   late List<Relaxer> relaxers;
-  bool backToLogin;
   bool _isTapActive = false;
-
-  _ListRelaxersState(this.backToLogin);
 
   @override
   void initState() {
@@ -38,18 +33,7 @@ class _ListRelaxersState extends State<ListRelaxers> {
     return Scaffold(
       backgroundColor: const Color(0xFF81B7AE),
       appBar: AppBar(
-        title: Text(widget.title),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) =>
-                backToLogin == true
-                    ? const LoginScreen()
-                    : const MyHomePage()
-                ));
-          },
-          icon: const Icon(Icons.arrow_back),
-        ),
+        title: Text(widget.title)
       ),
       body: buildBody(),
     );
