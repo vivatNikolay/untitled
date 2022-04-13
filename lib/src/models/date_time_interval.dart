@@ -8,16 +8,20 @@ class DateTimeInterval extends HiveObject {
   DateTime begin;
   @HiveField(1)
   DateTime end;
+  @HiveField(2)
+  String medRoom;
 
   DateTimeInterval({
     required this.begin,
-    required this.end
+    required this.end,
+    required this.medRoom
   });
 
   factory DateTimeInterval.fromJson(Map<String, dynamic> json) {
     return DateTimeInterval(
         begin: parseFromLocaleDateTime(json["beginTime"]),
-        end: parseFromLocaleDateTime(json["endTime"])
+        end: parseFromLocaleDateTime(json["endTime"]),
+        medRoom: json["medRoom"]
     );
   }
 }

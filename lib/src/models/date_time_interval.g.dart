@@ -19,17 +19,20 @@ class DateTimeIntervalAdapter extends TypeAdapter<DateTimeInterval> {
     return DateTimeInterval(
       begin: fields[0] as DateTime,
       end: fields[1] as DateTime,
+      medRoom: fields[2] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, DateTimeInterval obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.begin)
       ..writeByte(1)
-      ..write(obj.end);
+      ..write(obj.end)
+      ..writeByte(2)
+      ..write(obj.medRoom);
   }
 
   @override

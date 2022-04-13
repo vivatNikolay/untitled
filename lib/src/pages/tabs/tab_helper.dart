@@ -10,7 +10,7 @@ class TabHelper {
     for (Assignment el in list) {
       for (DateTimeInterval interval in el.intervals) {
         assignmentBeans.add(
-            AssignmentBean(el.procedureName, interval.begin, interval.end));
+            AssignmentBean(el.procedureName, interval.begin, interval.end, interval.medRoom));
       }
     }
     assignmentBeans.removeWhere((el) => !DateUtils.isSameDay(el.begin, day));
