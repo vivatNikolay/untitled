@@ -36,11 +36,23 @@ class _ListForDayState extends State<ListForDay> {
             return Card(
               shadowColor: const Color(0xFF75AAA1),
               elevation: 4.0,
+              margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
               child: ListTile(
+                leading: Column(
+                  children: [
+                    Text(
+                        formatTime.format(value[index].begin),
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    )
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                ),
                 title: Text(value[index].procedureName),
-                subtitle: Text(
-                    formatTime.format(value[index].begin)),
-                trailing: const Icon(Icons.more_vert),
+                subtitle: Text(value[index].medRoom),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
               ),
             );
           });

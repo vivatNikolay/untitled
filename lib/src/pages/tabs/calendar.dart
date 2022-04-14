@@ -109,32 +109,30 @@ class _TableAssignmentsState extends State<TableAssignments> {
               builder: (context, value, _) {
                 return ListView.builder(
                   itemCount: value.length,
+                  itemExtent: 72,
                   itemBuilder: (context, index) {
                     final DateFormat formatTime = DateFormat('HH:mm');
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 10.0,
+                    return Card(
+                      shadowColor: const Color(0xFF75AAA1),
+                      elevation: 10.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(13.0),
                       ),
-                      padding: const EdgeInsets.only(top: 0.5),
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFF476A68).withOpacity(0.4),
-                            blurRadius: 8.0,
-                            offset: const Offset(1, 6),
-                          )
-                        ],
-                      ),
-                      child: Card(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(13.0),
+                      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      child: ListTile(
+                        leading: Container(
+                          margin: const EdgeInsets.only(top: 6),
+                          child: Text(
+                              formatTime.format(value[index].begin),
+                              style: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
                         ),
-                        child: ListTile(
-                          onTap: () => print('${value[index]}'),
-                          title: Text('${value[index].procedureName} '
-                              '${formatTime.format(value[index].begin)}'),
-                        ),
+                        title: Text(value[index].procedureName),
+                        subtitle: Text(value[index].medRoom),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 10.0),
+                        isThreeLine: true,
                       ),
                     );
                   },
