@@ -7,6 +7,7 @@ import 'package:untitled/src/models/date_time_interval.dart';
 import 'package:untitled/src/models/relaxer.dart';
 import 'package:untitled/src/pages/login/login.dart';
 import 'package:untitled/src/pages/home.dart';
+import 'package:timezone/data/latest_10y.dart' as tz;
 
 void main() async {
   HttpOverrides.global = MyHttpOverrides ();
@@ -18,6 +19,8 @@ void main() async {
   Hive.registerAdapter(DateTimeIntervalAdapter());
   await Hive.openBox<Relaxer>('relaxer');
   await Hive.openBox<Assignment>('assignment');
+
+  tz.initializeTimeZones();
 
   runApp(const MyApp());
 }
