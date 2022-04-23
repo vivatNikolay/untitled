@@ -1,10 +1,10 @@
+import 'package:hive/hive.dart';
+import 'package:untitled/src/services/db/db_service.dart';
+import '../../models/relaxer.dart';
 
-import '../../boxes.dart';
-import '../models/relaxer.dart';
+class RelaxerDBService extends DBService<Relaxer> {
 
-class RelaxerService {
-
-  final boxRelaxer = Boxes.getRelaxers();
+  final boxRelaxer = Hive.box<Relaxer>('relaxer');
 
   void add(Relaxer relaxer) {
     for (Relaxer el in boxRelaxer.values) {
@@ -18,12 +18,23 @@ class RelaxerService {
     boxRelaxer.add(relaxer);
   }
 
-  void delete() {
-    for (Relaxer el in boxRelaxer.values) {
-      if(el.isActive) {
-        el.delete();
-      }
-    }
+  void delete(Relaxer relaxer) {
+    relaxer.delete();
+  }
+
+  @override
+  void addAll(Iterable<Relaxer> relaxers) {
+    boxRelaxer.addAll(relaxers);
+  }
+
+  @override
+  void deleteAll() {
+    boxRelaxer.deleteAll(boxRelaxer.keys);
+  }
+
+  @override
+  List<Relaxer> getAll() {
+    return boxRelaxer.values.toList();
   }
 
   Relaxer getActive() {
@@ -68,9 +79,4 @@ class RelaxerService {
       }
     }
   }
-
-  List<Relaxer> getRelaxers() {
-    return boxRelaxer.values.toList();
-  }
-
 }

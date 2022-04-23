@@ -3,16 +3,18 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:untitled/src/controllers/response_state.dart';
 import 'package:untitled/src/models/assignment.dart';
-import 'package:untitled/src/services/assignment_service.dart';
-import 'package:untitled/src/services/http_service.dart';
+import 'package:untitled/src/services/db/assignment_db_service.dart';
+import 'package:untitled/src/services/http/assignment_http_service.dart';
+import 'package:untitled/src/services/http/relaxer_http_service.dart';
 import '../models/relaxer.dart';
-import '../services/relaxer_service.dart';
+import '../services/db/relaxer_db_service.dart';
 
 class HttpController {
 
-  final HttpService _httpService = HttpService();
-  final AssignmentService _assignmentService = AssignmentService();
-  final RelaxerService _relaxerService = RelaxerService();
+  final AssignmentHttpService _assignmentHttpService = AssignmentHttpService();
+  final RelaxerHttpService _relaxerHttpService = RelaxerHttpService();
+  final AssignmentDBService _assignmentService = AssignmentDBService();
+  final RelaxerDBService _relaxerService = RelaxerDBService();
 
   late Relaxer _relaxer;
   late List<Assignment> _assignments;
@@ -36,7 +38,7 @@ class HttpController {
 
   void fetchRelaxer(String sanKey, String email) async {
     _stateRelaxer = ResponseState.processing;
-    futureRelaxer = _httpService.fetchRelaxer(sanKey, email);
+    futureRelaxer = _relaxerHttpService.fetch(sanKey, email);
     Timer(const Duration(milliseconds: 10), () {
       futureRelaxer.then((value) {
         _relaxer = value;
@@ -55,7 +57,7 @@ class HttpController {
 
   void fetchAssignments(String sanKey, String email) async {
     _stateAssignment = ResponseState.processing;
-    futureAssignment = _httpService.fetchAssignments(sanKey, email);
+    futureAssignment = _assignmentHttpService.fetch(sanKey, email);
     Timer(const Duration(milliseconds: 10), () {
       futureAssignment.then((value) {
         _assignments = value;
@@ -73,7 +75,7 @@ class HttpController {
   }
 
   void updateAssignments() {
-    _assignmentService.delete();
+    _assignmentService.deleteAll();
     _assignmentService.addAll(_assignments);
   }
 
@@ -91,8 +93,8 @@ class HttpController {
   }
 
   void exitFromAccount() {
-    _relaxerService.delete();
-    _assignmentService.delete();
+    _relaxerService.delete(getActiveRelaxer());
+    _assignmentService.deleteAll();
   }
 
   Relaxer getActiveRelaxer() {
@@ -104,7 +106,7 @@ class HttpController {
   }
 
   List<Relaxer> getRelaxers() {
-    return _relaxerService.getRelaxers();
+    return _relaxerService.getAll();
   }
 
   bool hasActive() {
@@ -116,10 +118,10 @@ class HttpController {
   }
 
   List<Assignment> getAssignments() {
-    return _assignmentService.getAssignments();
+    return _assignmentService.getAll();
   }
 
   void deleteAssignments() {
-    _assignmentService.delete();
+    _assignmentService.deleteAll();
   }
 }

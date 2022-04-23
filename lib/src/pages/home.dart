@@ -8,7 +8,7 @@ import '../controllers/controller.dart';
 import '../controllers/response_state.dart';
 import '../models/assignment.dart';
 import '../models/relaxer.dart';
-import '../services/notification_service.dart';
+import '../services/notification/notification_service.dart';
 import 'tabs/calendar.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -49,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
     NotificationService.showScheduledNotification(
         title: 'Умный санаторий',
         body: 'Близится время назначения!',
-        scheduledDate: tomorrowAssignments.value.first.begin.subtract(const Duration(minutes: 10)));
+        scheduledDate: DateTime.now().add(const Duration(seconds: 20)));
   }
 
   @override
