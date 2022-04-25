@@ -7,6 +7,10 @@ import '../../helpers/enums.dart';
 import '../../controllers/controller.dart';
 import '../home.dart';
 import '../list_relaxers.dart';
+import 'widgets/field_name.dart';
+import 'widgets/icon_button.dart';
+import 'widgets/text_field.dart';
+import 'widgets/login_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -19,9 +23,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   late final Controller _httpController;
   late TextEditingController inputController;
-  var _sanatoriumName;
-  ValidationState _textFieldValidation = ValidationState.valid;
-  bool _dropDownFieldEmpty = false;
+  String? sanatoriumName;
+  late ValueNotifier<ValidationState> textFieldValidation;
+  bool dropDownEmpty = false;
   bool _isButtonActive = true;
   final RegExp _regExpEmail = RegExp(
       r"^[\w.%+-]+@[A-z0-9.-]+\.[A-z]{2,}$",
@@ -35,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _httpController = Controller.instance;
     inputController = TextEditingController();
     inputController.addListener(_controllerListener);
+    textFieldValidation = ValueNotifier(ValidationState.valid);
   }
 
   void _controllerListener() {
@@ -48,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     inputController.removeListener(_controllerListener);
+    textFieldValidation.dispose();
     super.dispose();
   }
 
@@ -60,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
           height: double.infinity,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/images/medicine.png"),
+              image: AssetImage(medicineImage),
               alignment: Alignment.bottomRight,
               fit: BoxFit.cover,
             ),
@@ -87,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(
                       height: 50,
                     ),
-                    _buildTextContainer(text: 'Санаторий'),
+                    const FieldName(text: 'Санаторий'),
                     _buildDropDownField(
                       hintText: 'Выберите санаторий',
                       prefixedIcon: const Icon(Icons.home_work_outlined,
@@ -96,16 +102,36 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    _buildTextContainer(text: 'Email'),
-                    _buildTextField(
-                      hintText: 'Введите email',
+                    const FieldName(text: 'Email'),
+                    MyTextField(
+                      controller: inputController,
                       prefixedIcon:
                           const Icon(Icons.email_outlined, color: Colors.white),
+                      hintText: 'Введите email',
+                      invalidText: 'Неверный email',
+                      textFieldValidation: textFieldValidation,
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    _buildLoginButton()
+                    LoginButton(
+                      onPressed: _isButtonActive
+                          ? () async {
+                              setState(() {
+                                validateEmail();
+                                sanatoriumName == null
+                                    ? dropDownEmpty = true
+                                    : dropDownEmpty = false;
+                                _isButtonActive = false;
+                              });
+                              if (sanatoriumName != null &&
+                                  textFieldValidation.value ==
+                                      ValidationState.valid) {
+                                _checkLogin();
+                              }
+                            }
+                          : null,
+                    ),
                   ],
                 ),
               ),
@@ -123,35 +149,11 @@ class _LoginScreenState extends State<LoginScreen> {
         vertical: 20,
       ),
       alignment: Alignment.topRight,
-      child: IconButton(
-        icon: const Icon(
-          Icons.group,
-          size: 28,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const ListRelaxers()));
-        },
-      ),
-    );
-  }
-
-  Widget _buildTextContainer({
-  required String text,
-  }) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      margin: const EdgeInsets.only(bottom: 10),
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontFamily: 'PT-Sans',
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
+      child: MyIconButton(
+        icon: Icons.group,
+        onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const ListRelaxers()))
+      )
     );
   }
 
@@ -174,12 +176,12 @@ class _LoginScreenState extends State<LoginScreen> {
             value: code,
           ));
         }).values.toList(),
-        value: _sanatoriumName,
+        value: sanatoriumName,
         iconEnabledColor: Colors.white,
         iconDisabledColor: Colors.white70,
         dropdownColor: dropdownColor,
         decoration: InputDecoration(
-          border: _dropDownFieldEmpty ?
+          border: dropDownEmpty ?
             const UnderlineInputBorder(
               borderSide: BorderSide(color: redColor, width: 1),
             )
@@ -193,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
             fontWeight: FontWeight.bold,
             fontFamily: 'PTSans',
           ),
-          errorText: _dropDownFieldEmpty ? 'Это поле не может быть пустым' : null,
+          errorText: dropDownEmpty ? 'Это поле не может быть пустым' : null,
           errorStyle: const TextStyle(
             fontWeight: FontWeight.bold,
             color: redColor,
@@ -202,7 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
           onChanged: (String? newValue) {
           if (newValue != null) {
             setState(() {
-              _sanatoriumName = newValue;
+              sanatoriumName = newValue;
               _isButtonActive = true;
             });
           }
@@ -211,82 +213,8 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildTextField({
-    Widget? prefixedIcon,
-    required String hintText,
-  }) {
-    return Material(
-      color: Colors.transparent,
-      child: TextField(
-        controller: inputController,
-        cursorColor: Colors.white,
-        cursorWidth: 2,
-        style: const TextStyle(color: Colors.white),
-        decoration: InputDecoration(
-          border: _textFieldValidation != ValidationState.valid ?
-            const UnderlineInputBorder(
-              borderSide: BorderSide(color: redColor, width: 1),
-            )
-            : InputBorder.none,
-          filled: true,
-          fillColor: fieldColor.withOpacity(0.9),
-          prefixIcon: prefixedIcon,
-          hintText: hintText,
-          hintStyle: const TextStyle(
-            color: Colors.white70,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'PTSans',
-          ),
-          errorText: validationMessage(_textFieldValidation),
-          errorStyle: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: redColor,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLoginButton() {
-    return SizedBox(
-      height: 50,
-      width: double.infinity,
-      child: OutlinedButton(
-        style: OutlinedButton.styleFrom(
-          backgroundColor: buttonColor.withOpacity(0.7),
-          side: const BorderSide (color: Colors.white, width: 2),
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
-            ),
-        ),
-        child: const Text(
-          'Войти',
-          style: TextStyle(
-            fontFamily: 'PT-Sans',
-            fontSize: 19,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        onPressed: _isButtonActive ? () async {
-          setState(() {
-            validateEmail();
-            _sanatoriumName == null ? _dropDownFieldEmpty = true : _dropDownFieldEmpty = false;
-            _isButtonActive = false;
-          });
-          if (_sanatoriumName != null && _textFieldValidation == ValidationState.valid) {
-            _checkLogin();
-          }
-        }
-        : null,
-      ),
-    );
-  }
-
   Future<void> _checkLogin() async {
-    _httpController.fetchData(_sanatoriumName, inputController.text.trim());
+    _httpController.fetchData(sanatoriumName!, inputController.text.trim());
     await wait();
     if (_httpController.getStateLogin() == ResponseState.success) {
       _httpController.writeToDB();
@@ -314,23 +242,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void validateEmail() {
     if(inputController.text.trim().isEmpty) {
-      _textFieldValidation = ValidationState.empty;
+      textFieldValidation.value = ValidationState.empty;
       return;
     }
     if (_regExpEmail.hasMatch(inputController.text.trim())) {
-      _textFieldValidation = ValidationState.valid;
+      textFieldValidation.value = ValidationState.valid;
     } else {
-      _textFieldValidation = ValidationState.invalid;
+      textFieldValidation.value = ValidationState.invalid;
     }
-  }
-
-  String? validationMessage(ValidationState textFieldEmpty) {
-    if (textFieldEmpty == ValidationState.empty) {
-      return 'Это поле не может быть пустым';
-    }
-    if (textFieldEmpty == ValidationState.invalid) {
-      return 'Неверный email';
-    }
-    return null;
   }
 }

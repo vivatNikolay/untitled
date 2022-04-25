@@ -33,9 +33,7 @@ class MyDrawer extends StatelessWidget {
                       child: CircleAvatar(
                         backgroundColor: Colors.white,
                         radius: 40.0,
-                        child: Image.asset(relaxer.sex
-                            ? "assets/images/man.png"
-                            : "assets/images/woman.png"),
+                        child: Image.asset(relaxer.sex ? manImage : womanImage),
                       ),
                     ),
                     Align(

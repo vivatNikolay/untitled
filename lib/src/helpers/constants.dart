@@ -9,3 +9,7 @@ const dropdownColor = Color(0xFF75A79E);
 const buttonColor = Color(0xFFA4C1BD);
 const todayCalendarColor = Color(0xFFACCDC8);
 const redColor = Color(0xFFBA1818);
+
+const manImage = "assets/images/man.png";
+const womanImage = "assets/images/woman.png";
+const medicineImage = "assets/images/medicine.png";

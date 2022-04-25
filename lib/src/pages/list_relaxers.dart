@@ -62,8 +62,8 @@ class _ListRelaxersState extends State<ListRelaxers> {
                   backgroundColor: Colors.white,
                   radius: 40.0,
                   child: Image.asset(relaxers[index].sex
-                      ? "assets/images/man.png"
-                      : "assets/images/woman.png"),
+                      ? manImage
+                      : womanImage),
                 ),
                 title:
                     Text("${relaxers[index].name} ${relaxers[index].surname}"),
