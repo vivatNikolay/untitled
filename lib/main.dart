@@ -1,14 +1,14 @@
 import 'dart:io';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled/src/controllers/controller.dart';
-import 'package:untitled/src/helpers/constants.dart';
-import 'package:untitled/src/models/assignment.dart';
-import 'package:untitled/src/models/date_time_interval.dart';
-import 'package:untitled/src/models/relaxer.dart';
-import 'package:untitled/src/pages/login/login.dart';
-import 'package:untitled/src/pages/home.dart';
 import 'package:timezone/data/latest_10y.dart' as tz;
+import 'src/controllers/controller.dart';
+import 'src/helpers/constants.dart';
+import 'src/models/assignment.dart';
+import 'src/models/date_time_interval.dart';
+import 'src/models/relaxer.dart';
+import 'src/pages/login/login.dart';
+import 'src/pages/home.dart';
 
 void main() async {
   HttpOverrides.global = MyHttpOverrides ();

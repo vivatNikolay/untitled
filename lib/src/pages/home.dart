@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:untitled/src/models/assignment_bean.dart';
-import 'package:untitled/src/pages/drawer.dart';
-import 'package:untitled/src/pages/tabs/list_for_day.dart';
-import 'package:untitled/src/pages/tabs/tab_manager.dart';
 import '../controllers/controller.dart';
 import '../helpers/enums.dart';
 import '../models/assignment.dart';
 import '../models/relaxer.dart';
 import '../services/notification/notification_service.dart';
+import '../models/assignment_bean.dart';
+import 'tabs/list_for_day.dart';
+import 'tabs/tab_manager.dart';
 import 'tabs/calendar.dart';
+import 'drawer.dart';
 
 class MyHomePage extends StatefulWidget {
   final String title = 'Расписание';

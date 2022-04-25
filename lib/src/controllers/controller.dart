@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
-import 'package:untitled/src/models/assignment.dart';
-import 'package:untitled/src/services/db/assignment_db_service.dart';
-import 'package:untitled/src/services/http/assignment_http_service.dart';
-import 'package:untitled/src/services/http/relaxer_http_service.dart';
+import '../models/assignment.dart';
+import '../services/db/assignment_db_service.dart';
+import '../services/http/assignment_http_service.dart';
+import '../services/http/relaxer_http_service.dart';
 import '../helpers/enums.dart';
 import '../models/relaxer.dart';
 import '../services/db/relaxer_db_service.dart';

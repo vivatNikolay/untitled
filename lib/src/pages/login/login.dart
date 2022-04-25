@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:untitled/src/models/sanatorium.dart';
-import 'package:untitled/src/pages/home.dart';
+import '../../models/sanatorium.dart';
 import '../../helpers/constants.dart';
 import '../../helpers/enums.dart';
 import '../../controllers/controller.dart';
+import '../home.dart';
 import '../list_relaxers.dart';
 
 class LoginScreen extends StatefulWidget {

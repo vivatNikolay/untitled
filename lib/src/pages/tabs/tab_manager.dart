@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../models/assignment.dart';
 import '../../models/assignment_bean.dart';
 import '../../models/date_time_interval.dart';

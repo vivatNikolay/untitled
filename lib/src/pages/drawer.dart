@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled/src/pages/list_relaxers.dart';
-import 'package:untitled/src/pages/login/login.dart';
 import '../controllers/controller.dart';
 import '../helpers/constants.dart';
 import '../models/relaxer.dart';
+import 'list_relaxers.dart';
+import 'login/login.dart';
 
 class MyDrawer extends StatelessWidget {
 

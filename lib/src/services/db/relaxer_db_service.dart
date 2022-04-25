@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:untitled/src/services/db/db_service.dart';
 import '../../models/relaxer.dart';
+import 'db_service.dart';
 
 class RelaxerDBService extends DBService<Relaxer> {
 

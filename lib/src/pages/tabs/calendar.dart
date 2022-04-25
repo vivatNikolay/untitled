@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:untitled/src/models/assignment_bean.dart';
-import 'package:untitled/src/pages/tabs/tab_manager.dart';
+import '../../models/assignment_bean.dart';
 import '../../helpers/constants.dart';
 import '../../models/assignment.dart';
+import '../tabs/tab_manager.dart';
 
 class TableAssignments extends StatefulWidget {
   var assignments;
