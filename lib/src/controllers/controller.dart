@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
-import 'package:untitled/src/controllers/response_state.dart';
 import 'package:untitled/src/models/assignment.dart';
 import 'package:untitled/src/services/db/assignment_db_service.dart';
 import 'package:untitled/src/services/http/assignment_http_service.dart';
 import 'package:untitled/src/services/http/relaxer_http_service.dart';
+import '../helpers/enums.dart';
 import '../models/relaxer.dart';
 import '../services/db/relaxer_db_service.dart';
 
-class HttpController {
+class Controller {
 
   final AssignmentHttpService _assignmentHttpService = AssignmentHttpService();
   final RelaxerHttpService _relaxerHttpService = RelaxerHttpService();
@@ -25,10 +25,10 @@ class HttpController {
   ResponseState _stateRelaxer = ResponseState.processing;
   ResponseState _stateAssignment = ResponseState.processing;
 
-  HttpController._privateConstructor();
-  static final HttpController _instance = HttpController._privateConstructor();
+  Controller._privateConstructor();
+  static final Controller _instance = Controller._privateConstructor();
 
-  static HttpController get instance => _instance;
+  static Controller get instance => _instance;
 
   void fetchData(String sanKey, String email) {
     fetchRelaxer(sanKey, email);

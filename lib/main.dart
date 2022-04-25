@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/src/controllers/controller.dart';
+import 'package:untitled/src/helpers/constants.dart';
 import 'package:untitled/src/models/assignment.dart';
 import 'package:untitled/src/models/date_time_interval.dart';
 import 'package:untitled/src/models/relaxer.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HttpController _httpController = HttpController.instance;
+    final Controller _httpController = Controller.instance;
     StatefulWidget home;
     if (_httpController.hasActive()) {
       home = const MyHomePage();
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
       title: 'Scheduler',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: const Color(0xFF81B7AE),
+          primary: primaryColor,
         ),
         visualDensity: VisualDensity.adaptivePlatformDensity
       ),

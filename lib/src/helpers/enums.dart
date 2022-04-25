@@ -5,3 +5,10 @@ enum ResponseState {
   processing,
   no_connection
 }
+
+enum ValidationState {
+  valid,
+  empty,
+  invalid
+}
+

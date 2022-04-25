@@ -3,9 +3,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:untitled/src/models/assignment_bean.dart';
 import 'package:untitled/src/pages/drawer.dart';
 import 'package:untitled/src/pages/tabs/list_for_day.dart';
-import 'package:untitled/src/pages/tabs/tab_helper.dart';
+import 'package:untitled/src/pages/tabs/tab_manager.dart';
 import '../controllers/controller.dart';
-import '../controllers/response_state.dart';
+import '../helpers/enums.dart';
 import '../models/assignment.dart';
 import '../models/relaxer.dart';
 import '../services/notification/notification_service.dart';
@@ -21,11 +21,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late final HttpController _httpController;
+  late final Controller _httpController;
   late DateTime _today;
   late DateTime _tomorrow;
   late Relaxer relaxer;
-  late TabHelper tabHelper;
+  late TabManager tabHelper;
   late ValueNotifier<List<AssignmentBean>> todayAssignments;
   late ValueNotifier<List<AssignmentBean>> tomorrowAssignments;
   late ValueNotifier<List<Assignment>> assignments;
@@ -35,11 +35,11 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
 
-    _httpController = HttpController.instance;
+    _httpController = Controller.instance;
     _today = DateTime.now();
     _tomorrow = DateTime(_today.year, _today.month, _today.day + 1);
     relaxer = _httpController.getActiveRelaxer();
-    tabHelper = TabHelper();
+    tabHelper = TabManager();
     assignments = ValueNotifier(_httpController.getAssignments());
     todayAssignments = ValueNotifier(tabHelper.getAssignmentBeansByDay(_today, assignments.value));
     tomorrowAssignments = ValueNotifier(tabHelper.getAssignmentBeansByDay(_tomorrow, assignments.value));

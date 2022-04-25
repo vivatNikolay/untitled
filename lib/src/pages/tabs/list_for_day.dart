@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../helpers/constants.dart';
+
 class ListForDay extends StatefulWidget {
   var assignments;
   ListForDay(this.assignments, {Key? key}) : super(key: key);
@@ -21,7 +23,7 @@ class _ListForDayState extends State<ListForDay> {
       return const Center(
           child: Text("Процедур нет",
             style: TextStyle(
-                color: Color(0xFF7B7B7B),
+                color: emptyTextColor,
                 fontSize: 19.0,
                 fontFamily: 'TimesNewRoman'),
           )
@@ -34,7 +36,7 @@ class _ListForDayState extends State<ListForDay> {
             itemCount: value.length,
             itemBuilder: (_, index) {
             return Card(
-              shadowColor: const Color(0xFF75AAA1),
+              shadowColor: shadowColor,
               elevation: 4.0,
               margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
               shape: RoundedRectangleBorder(

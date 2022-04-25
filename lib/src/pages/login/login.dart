@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:untitled/src/controllers/response_state.dart';
 import 'package:untitled/src/models/sanatorium.dart';
 import 'package:untitled/src/pages/home.dart';
-import 'package:untitled/src/pages/login/validation_state.dart';
+import '../../helpers/constants.dart';
+import '../../helpers/enums.dart';
 import '../../controllers/controller.dart';
 import '../list_relaxers.dart';
 
@@ -17,7 +17,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
-  late final HttpController _httpController;
+  late final Controller _httpController;
   late TextEditingController inputController;
   var _sanatoriumName;
   ValidationState _textFieldValidation = ValidationState.valid;
@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
 
-    _httpController = HttpController.instance;
+    _httpController = Controller.instance;
     inputController = TextEditingController();
     inputController.addListener(_controllerListener);
   }
@@ -177,15 +177,15 @@ class _LoginScreenState extends State<LoginScreen> {
         value: _sanatoriumName,
         iconEnabledColor: Colors.white,
         iconDisabledColor: Colors.white70,
-        dropdownColor: const Color(0xFF75A79E),
+        dropdownColor: dropdownColor,
         decoration: InputDecoration(
           border: _dropDownFieldEmpty ?
             const UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFBA1818), width: 1),
+              borderSide: BorderSide(color: redColor, width: 1),
             )
             : InputBorder.none,
           filled: true,
-          fillColor: const Color(0xFF72A39A).withOpacity(0.95),
+          fillColor: fieldColor.withOpacity(0.95),
           prefixIcon: prefixedIcon,
           hintText: hintText,
           hintStyle: const TextStyle(
@@ -196,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
           errorText: _dropDownFieldEmpty ? 'Это поле не может быть пустым' : null,
           errorStyle: const TextStyle(
             fontWeight: FontWeight.bold,
-            color: Color(0xFFBA1818),
+            color: redColor,
           ),
         ),
           onChanged: (String? newValue) {
@@ -225,11 +225,11 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: InputDecoration(
           border: _textFieldValidation != ValidationState.valid ?
             const UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFBA1818), width: 1),
+              borderSide: BorderSide(color: redColor, width: 1),
             )
             : InputBorder.none,
           filled: true,
-          fillColor: const Color(0xFF72A39A).withOpacity(0.9),
+          fillColor: fieldColor.withOpacity(0.9),
           prefixIcon: prefixedIcon,
           hintText: hintText,
           hintStyle: const TextStyle(
@@ -240,7 +240,7 @@ class _LoginScreenState extends State<LoginScreen> {
           errorText: validationMessage(_textFieldValidation),
           errorStyle: const TextStyle(
             fontWeight: FontWeight.bold,
-            color: Color(0xFFBA1818),
+            color: redColor,
           ),
         ),
       ),
@@ -253,7 +253,7 @@ class _LoginScreenState extends State<LoginScreen> {
       width: double.infinity,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
-          backgroundColor: Color(0xFFA4C1BD).withOpacity(0.7),
+          backgroundColor: buttonColor.withOpacity(0.7),
           side: const BorderSide (color: Colors.white, width: 2),
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(

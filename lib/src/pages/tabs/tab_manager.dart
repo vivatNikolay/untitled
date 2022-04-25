@@ -4,7 +4,7 @@ import '../../models/assignment.dart';
 import '../../models/assignment_bean.dart';
 import '../../models/date_time_interval.dart';
 
-class TabHelper {
+class TabManager {
   List<AssignmentBean> getAssignmentBeansByDay(DateTime day, List<Assignment> list) {
     List<AssignmentBean> assignmentBeans = [];
     for (Assignment el in list) {

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:untitled/src/models/assignment_bean.dart';
-import 'package:untitled/src/pages/tabs/tab_helper.dart';
+import 'package:untitled/src/pages/tabs/tab_manager.dart';
+import '../../helpers/constants.dart';
 import '../../models/assignment.dart';
 
 class TableAssignments extends StatefulWidget {
@@ -23,7 +24,7 @@ class _TableAssignmentsState extends State<TableAssignments> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   late ValueNotifier<List<Assignment>> assignments;
-  late TabHelper tabHelper;
+  late TabManager tabHelper;
 
   _TableAssignmentsState(this.assignments);
 
@@ -31,7 +32,7 @@ class _TableAssignmentsState extends State<TableAssignments> {
   void initState() {
     super.initState();
 
-    tabHelper = TabHelper();
+    tabHelper = TabManager();
     _selectedDay = _focusedDay;
     _selectedAssignmentBeans = ValueNotifier(_getAssignmentsForDay(_selectedDay!));
     _rangeSelectionMode = RangeSelectionMode.toggledOff;
@@ -80,13 +81,13 @@ class _TableAssignmentsState extends State<TableAssignments> {
             startingDayOfWeek: StartingDayOfWeek.monday,
             calendarStyle: const CalendarStyle(
               outsideDaysVisible: true,
-              weekendTextStyle: TextStyle(color: Color(0xFFBA1818)),
+              weekendTextStyle: TextStyle(color: redColor),
               selectedDecoration : BoxDecoration(
-                color: Color(0xFF75AAA1),
+                color: shadowColor,
                 shape: BoxShape.circle,
               ),
               todayDecoration:  BoxDecoration(
-                color: Color(0xFFACCDC8),
+                color: todayCalendarColor,
                 shape: BoxShape.circle,
               ),
             ),
@@ -113,7 +114,7 @@ class _TableAssignmentsState extends State<TableAssignments> {
                   itemBuilder: (context, index) {
                     final DateFormat formatTime = DateFormat('HH:mm');
                     return Card(
-                      shadowColor: const Color(0xFF75AAA1),
+                      shadowColor: shadowColor,
                       elevation: 10.0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(13.0),

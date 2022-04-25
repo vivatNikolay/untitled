@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../controllers/controller.dart';
-import '../controllers/response_state.dart';
+import '../helpers/constants.dart';
+import '../helpers/enums.dart';
 import '../models/relaxer.dart';
 import 'home.dart';
 
@@ -15,7 +16,7 @@ class ListRelaxers extends StatefulWidget {
 }
 
 class _ListRelaxersState extends State<ListRelaxers> {
-  late final HttpController _httpController;
+  late final Controller _httpController;
   late List<Relaxer> relaxers;
   bool _isTapActive = false;
 
@@ -23,7 +24,7 @@ class _ListRelaxersState extends State<ListRelaxers> {
   void initState() {
     super.initState();
 
-    _httpController = HttpController.instance;
+    _httpController = Controller.instance;
     relaxers = _httpController.getRelaxers();
     _isTapActive = true;
   }
@@ -31,7 +32,7 @@ class _ListRelaxersState extends State<ListRelaxers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF81B7AE),
+      backgroundColor: primaryColor,
       appBar: AppBar(
         title: Text(widget.title)
       ),
@@ -45,7 +46,7 @@ class _ListRelaxersState extends State<ListRelaxers> {
           child: Text(
         "Аккаунтов нет",
         style: TextStyle(
-            color: Color(0xFF7B7B7B),
+            color: emptyTextColor,
             fontSize: 19.0,
             fontFamily: 'TimesNewRoman'),
       ));
@@ -54,7 +55,7 @@ class _ListRelaxersState extends State<ListRelaxers> {
           itemCount: relaxers.length,
           itemBuilder: (_, index) {
             return Card(
-              shadowColor: const Color(0xFF75AAA1),
+              shadowColor: shadowColor,
               elevation: 4.0,
               child: ListTile(
                 leading: CircleAvatar(

@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:untitled/src/pages/list_relaxers.dart';
 import 'package:untitled/src/pages/login/login.dart';
 import '../controllers/controller.dart';
+import '../helpers/constants.dart';
 import '../models/relaxer.dart';
 
 class MyDrawer extends StatelessWidget {
 
   late Relaxer relaxer;
 
-  final HttpController _httpController = HttpController.instance;
+  final Controller _httpController = Controller.instance;
 
   MyDrawer({Key? key}) : super(key: key) {
     relaxer = _httpController.getActiveRelaxer();
@@ -24,7 +25,7 @@ class MyDrawer extends StatelessWidget {
             DrawerHeader(
                 decoration: const BoxDecoration(
                     gradient: LinearGradient(
-                        colors: [Color(0xFF75A39E), Color(0xFF81B7AE)])),
+                        colors: [shadowColor, primaryColor])),
                 child: Stack(
                   children: <Widget>[
                     Align(
