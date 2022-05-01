@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String? sanatoriumName;
   late ValueNotifier<ValidationState> textFieldValidation;
   bool dropDownEmpty = false;
-  bool _isButtonActive = true;
+  late ValueNotifier<bool> isButtonActive;
   final RegExp _regExpEmail = RegExp(
       r"^[\w.%+-]+@[A-z0-9.-]+\.[A-z]{2,}$",
       multiLine: false
@@ -40,12 +40,13 @@ class _LoginScreenState extends State<LoginScreen> {
     inputController = TextEditingController();
     inputController.addListener(_controllerListener);
     textFieldValidation = ValueNotifier(ValidationState.valid);
+    isButtonActive = ValueNotifier(true);
   }
 
   void _controllerListener() {
     if (inputController.text.isNotEmpty) {
       setState(() {
-        _isButtonActive = true;
+        isButtonActive.value = true;
       });
     }
   }
@@ -54,6 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     inputController.removeListener(_controllerListener);
     textFieldValidation.dispose();
+    isButtonActive.dispose();
     super.dispose();
   }
 
@@ -66,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
           height: double.infinity,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(medicineImage),
+              image: AssetImage('assets/images/medicine.png'),
               alignment: Alignment.bottomRight,
               fit: BoxFit.cover,
             ),
@@ -115,14 +117,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 20,
                     ),
                     LoginButton(
-                      onPressed: _isButtonActive
+                      isButtonActive : isButtonActive,
+                      onPressed: isButtonActive.value
                           ? () async {
                               setState(() {
                                 validateEmail();
                                 sanatoriumName == null
                                     ? dropDownEmpty = true
                                     : dropDownEmpty = false;
-                                _isButtonActive = false;
+                                isButtonActive.value = false;
                               });
                               if (sanatoriumName != null &&
                                   textFieldValidation.value ==
@@ -205,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (newValue != null) {
             setState(() {
               sanatoriumName = newValue;
-              _isButtonActive = true;
+              isButtonActive.value = true;
             });
           }
         },
@@ -226,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Fluttertoast.showToast(msg: "Отдыхающий не найден");
     }
     setState(() {
-      _isButtonActive = true;
+      isButtonActive.value = true;
     });
   }
 

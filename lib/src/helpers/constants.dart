@@ -12,4 +12,3 @@ const redColor = Color(0xFFBA1818);
 
 const manImage = "assets/images/man.png";
 const womanImage = "assets/images/woman.png";
-const medicineImage = "assets/images/medicine.png";
