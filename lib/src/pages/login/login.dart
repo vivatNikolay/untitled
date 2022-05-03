@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String? sanatoriumName;
   late ValueNotifier<ValidationState> textFieldValidation;
   bool dropDownEmpty = false;
-  late ValueNotifier<bool> isButtonActive;
+  bool _isButtonActive = true;
   final RegExp _regExpEmail = RegExp(
       r"^[\w.%+-]+@[A-z0-9.-]+\.[A-z]{2,}$",
       multiLine: false
@@ -40,13 +40,12 @@ class _LoginScreenState extends State<LoginScreen> {
     inputController = TextEditingController();
     inputController.addListener(_controllerListener);
     textFieldValidation = ValueNotifier(ValidationState.valid);
-    isButtonActive = ValueNotifier(true);
   }
 
   void _controllerListener() {
     if (inputController.text.isNotEmpty) {
       setState(() {
-        isButtonActive.value = true;
+        _isButtonActive = true;
       });
     }
   }
@@ -55,7 +54,6 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     inputController.removeListener(_controllerListener);
     textFieldValidation.dispose();
-    isButtonActive.dispose();
     super.dispose();
   }
 
@@ -117,15 +115,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 20,
                     ),
                     LoginButton(
-                      isButtonActive : isButtonActive,
-                      onPressed: isButtonActive.value
+                      onPressed: _isButtonActive
                           ? () async {
                               setState(() {
                                 validateEmail();
                                 sanatoriumName == null
                                     ? dropDownEmpty = true
                                     : dropDownEmpty = false;
-                                isButtonActive.value = false;
+                                _isButtonActive = false;
                               });
                               if (sanatoriumName != null &&
                                   textFieldValidation.value ==
@@ -208,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (newValue != null) {
             setState(() {
               sanatoriumName = newValue;
-              isButtonActive.value = true;
+              _isButtonActive = true;
             });
           }
         },
@@ -229,7 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Fluttertoast.showToast(msg: "Отдыхающий не найден");
     }
     setState(() {
-      isButtonActive.value = true;
+      _isButtonActive = true;
     });
   }
 
