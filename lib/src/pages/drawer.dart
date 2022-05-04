@@ -5,12 +5,14 @@ import '../helpers/constants.dart';
 import '../models/relaxer.dart';
 import 'list_relaxers.dart';
 import 'login/login.dart';
+import 'tab_manager.dart';
 
 class MyDrawer extends StatelessWidget {
 
   late Relaxer relaxer;
 
   final Controller _httpController = Controller.instance;
+  final TabManager _tabManager = TabManager.instance;
 
   MyDrawer({Key? key}) : super(key: key) {
     relaxer = _httpController.getActiveRelaxer();
@@ -69,6 +71,7 @@ class MyDrawer extends StatelessWidget {
                     ));
                 _httpController.deleteAssignments();
                 _httpController.makeInActive();
+                _tabManager.cancelNotifications();
               },
             ),
             ListTile(
@@ -92,6 +95,7 @@ class MyDrawer extends StatelessWidget {
                         builder: (context) => const LoginScreen()
                     ));
                 _httpController.exitFromAccount();
+                _tabManager.cancelNotifications();
               },
             )
           ],

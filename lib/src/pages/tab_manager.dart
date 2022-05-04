@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../models/assignment.dart';
-import '../../models/assignment_bean.dart';
-import '../../models/date_time_interval.dart';
-import '../../services/notification/notification_service.dart';
+import '../models/assignment.dart';
+import '../models/assignment_bean.dart';
+import '../models/date_time_interval.dart';
+import '../services/notification/notification_service.dart';
 
 class TabManager {
   static final TabManager _instance = TabManager();
@@ -39,7 +39,7 @@ class TabManager {
     }
     assignmentBeans.sort(
             (AssignmentBean a, AssignmentBean b) => a.begin.compareTo(b.begin));
-    DateTime day = assignmentBeans.first.begin.subtract(Duration(days: -1));
+    DateTime day = DateTime.now().subtract(const Duration(days: -1));
     List<AssignmentBean> resultList = [];
     for (AssignmentBean el in assignmentBeans) {
       if (!DateUtils.isSameDay(el.begin, day)){
@@ -51,14 +51,20 @@ class TabManager {
   }
 
   void makeNotifications(List<Assignment> assignments) {
+    NotificationService.cancelAll();
     List<AssignmentBean> assignmentBeans = _getFirstAssignmentBeansInDay(assignments);
-    if (assignmentBeans.isNotEmpty &&
-        assignmentBeans.first.begin.isAfter(DateTime.now())) {
-      NotificationService.showScheduledNotification(
-          title: 'Умный санаторий',
-          body: 'Через 10 минут назначение',
-          scheduledDate: assignmentBeans.first.begin
-              .subtract(const Duration(minutes: 10)));
+    for(AssignmentBean bean in assignmentBeans) {
+      if (bean.begin.isAfter(DateTime.now())) {
+        NotificationService.showScheduledNotification(
+            title: 'Умный санаторий',
+            body: 'Через 10 минут назначение',
+            scheduledDate: bean.begin
+                .subtract(const Duration(minutes: 10)));
+      }
     }
+  }
+
+  void cancelNotifications() {
+    NotificationService.cancelAll();
   }
 }

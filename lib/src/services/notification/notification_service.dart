@@ -46,4 +46,6 @@ class NotificationService {
         uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
       );
+
+  static Future cancelAll() => _notifications.cancelAll();
 }

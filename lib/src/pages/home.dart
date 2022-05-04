@@ -6,8 +6,8 @@ import '../models/assignment.dart';
 import '../models/relaxer.dart';
 import '../models/assignment_bean.dart';
 import 'tabs/list_for_day.dart';
-import 'tabs/tab_manager.dart';
 import 'tabs/calendar.dart';
+import 'tab_manager.dart';
 import 'drawer.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -24,7 +24,7 @@ class _MyHomePageState extends State<MyHomePage> {
   late DateTime _today;
   late DateTime _tomorrow;
   late Relaxer relaxer;
-  late TabManager tabHelper;
+  late TabManager _tabManager;
   late ValueNotifier<List<AssignmentBean>> todayAssignments;
   late ValueNotifier<List<AssignmentBean>> tomorrowAssignments;
   late ValueNotifier<List<Assignment>> assignments;
@@ -38,12 +38,12 @@ class _MyHomePageState extends State<MyHomePage> {
     _today = DateTime.now();
     _tomorrow = DateTime(_today.year, _today.month, _today.day + 1);
     relaxer = _httpController.getActiveRelaxer();
-    tabHelper = TabManager.instance;
+    _tabManager = TabManager.instance;
     assignments = ValueNotifier(_httpController.getAssignments());
-    todayAssignments = ValueNotifier(tabHelper.getAssignmentBeansByDay(_today, assignments.value));
-    tomorrowAssignments = ValueNotifier(tabHelper.getAssignmentBeansByDay(_tomorrow, assignments.value));
+    todayAssignments = ValueNotifier(_tabManager.getAssignmentBeansByDay(_today, assignments.value));
+    tomorrowAssignments = ValueNotifier(_tabManager.getAssignmentBeansByDay(_tomorrow, assignments.value));
     _isButtonActive = true;
-    tabHelper.makeNotifications(assignments.value);
+    _tabManager.makeNotifications(assignments.value);
   }
 
   @override
@@ -104,11 +104,12 @@ class _MyHomePageState extends State<MyHomePage> {
       _httpController.updateAssignments();
       assignments.value = _httpController.getAssignments();
       todayAssignments.value =
-          tabHelper.getAssignmentBeansByDay(
+          _tabManager.getAssignmentBeansByDay(
               _today, assignments.value);
       tomorrowAssignments.value =
-          tabHelper.getAssignmentBeansByDay(
+          _tabManager.getAssignmentBeansByDay(
               _tomorrow, assignments.value);
+      _tabManager.makeNotifications(assignments.value);
     } else if (_httpController.getStateUpdate() == ResponseState.no_connection) {
       Fluttertoast.showToast(msg: "Проверьте интернет соединение");
     } else {

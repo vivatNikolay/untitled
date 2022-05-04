@@ -4,7 +4,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../models/assignment_bean.dart';
 import '../../helpers/constants.dart';
 import '../../models/assignment.dart';
-import '../tabs/tab_manager.dart';
+import '../tab_manager.dart';
 
 class TableAssignments extends StatefulWidget {
   var assignments;
@@ -24,7 +24,7 @@ class _TableAssignmentsState extends State<TableAssignments> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   late ValueNotifier<List<Assignment>> assignments;
-  late TabManager tabHelper;
+  late TabManager _tabManager;
 
   _TableAssignmentsState(this.assignments);
 
@@ -32,7 +32,7 @@ class _TableAssignmentsState extends State<TableAssignments> {
   void initState() {
     super.initState();
 
-    tabHelper = TabManager.instance;
+    _tabManager = TabManager.instance;
     _selectedDay = _focusedDay;
     _selectedAssignmentBeans = ValueNotifier(_getAssignmentsForDay(_selectedDay!));
     _rangeSelectionMode = RangeSelectionMode.toggledOff;
@@ -50,7 +50,7 @@ class _TableAssignmentsState extends State<TableAssignments> {
   }
 
   List<AssignmentBean> _getAssignmentsForDay(DateTime day) {
-    return tabHelper.getAssignmentBeansByDay(day, assignments.value);
+    return _tabManager.getAssignmentBeansByDay(day, assignments.value);
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
