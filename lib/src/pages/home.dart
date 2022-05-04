@@ -4,7 +4,6 @@ import '../controllers/controller.dart';
 import '../helpers/enums.dart';
 import '../models/assignment.dart';
 import '../models/relaxer.dart';
-import '../services/notification/notification_service.dart';
 import '../models/assignment_bean.dart';
 import 'tabs/list_for_day.dart';
 import 'tabs/tab_manager.dart';
@@ -39,17 +38,12 @@ class _MyHomePageState extends State<MyHomePage> {
     _today = DateTime.now();
     _tomorrow = DateTime(_today.year, _today.month, _today.day + 1);
     relaxer = _httpController.getActiveRelaxer();
-    tabHelper = TabManager();
+    tabHelper = TabManager.instance;
     assignments = ValueNotifier(_httpController.getAssignments());
     todayAssignments = ValueNotifier(tabHelper.getAssignmentBeansByDay(_today, assignments.value));
     tomorrowAssignments = ValueNotifier(tabHelper.getAssignmentBeansByDay(_tomorrow, assignments.value));
     _isButtonActive = true;
-
-    NotificationService.init();
-    NotificationService.showScheduledNotification(
-        title: 'Умный санаторий',
-        body: 'Близится время назначения!',
-        scheduledDate: DateTime.now().add(const Duration(seconds: 20)));
+    tabHelper.makeNotifications(assignments.value);
   }
 
   @override
@@ -81,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                   }
                   : null,
-                  icon: const Icon(Icons.update),
+                  icon: const Icon(Icons.refresh),
                 )
             ),
           ],

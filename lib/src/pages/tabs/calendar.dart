@@ -32,7 +32,7 @@ class _TableAssignmentsState extends State<TableAssignments> {
   void initState() {
     super.initState();
 
-    tabHelper = TabManager();
+    tabHelper = TabManager.instance;
     _selectedDay = _focusedDay;
     _selectedAssignmentBeans = ValueNotifier(_getAssignmentsForDay(_selectedDay!));
     _rangeSelectionMode = RangeSelectionMode.toggledOff;

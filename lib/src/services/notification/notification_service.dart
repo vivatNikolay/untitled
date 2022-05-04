@@ -28,19 +28,7 @@ class NotificationService {
       settings,
       onSelectNotification: (payload) async {},
     );
-}
-
-  static Future showNotification({
-    int id = 0,
-    String? title,
-    String? body,
-  }) async =>
-      _notifications.show(
-          id,
-          title,
-          body,
-          await _notificationDetails(),
-      );
+  }
 
   static Future showScheduledNotification({
     int id = 0,
@@ -58,5 +46,4 @@ class NotificationService {
         uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
       );
-
 }
